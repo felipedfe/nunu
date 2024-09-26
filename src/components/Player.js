@@ -68,9 +68,13 @@ export class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, 'player');
 
-    this.setOrigin(0.5, 0.5);
+    this.setOrigin(1, 1);
     scene.physics.world.enable(this);
     this.body.setCollideWorldBounds(true);
+
+    // caixa de colisão
+    this.body.setSize(200, 80);
+    this.body.setOffset(100, 30);
 
     this.play('move');
 
@@ -103,8 +107,8 @@ export class Player extends Phaser.GameObjects.Sprite {
   update(cursors) {
     if (cursors.left.isDown) {
       this.body.setAccelerationX(this.acceleration * -1); // move para a esquerda
-      console.log(this.anims.currentAnim?.key !== 'eat')
-       if (this.anims.currentAnim?.key !== 'eat') {
+      // console.log(this.anims.currentAnim?.key !== 'eat')
+      if (this.anims.currentAnim?.key !== 'eat' && (this.anims.currentAnim?.key !== 'move' || !this.anims.isPlaying)) {
         this.play('move');
       }
 
@@ -114,7 +118,7 @@ export class Player extends Phaser.GameObjects.Sprite {
       }
     } else if (cursors.right.isDown) {
       this.body.setAccelerationX(this.acceleration); // move para a direita
-       if (this.anims.currentAnim?.key !== 'eat') {
+      if (this.anims.currentAnim?.key !== 'eat' && (this.anims.currentAnim?.key !== 'move' || !this.anims.isPlaying)) {
         this.play('move');
       }
 
@@ -128,7 +132,7 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     // verifica se a tecla de espaço foi pressionada para ativar o boost
     // if (Phaser.Input.Keyboard.JustDown(cursors.space)) {
-      if (cursors.space.isDown) {
+    if (cursors.space.isDown) {
       if (cursors.left.isDown) {
         this.activateBoost('left');
       } else if (cursors.right.isDown) {
