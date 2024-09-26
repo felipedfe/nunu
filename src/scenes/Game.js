@@ -17,10 +17,11 @@ export class Game extends Scene {
     this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // cria player
-    this.player = new Player(this, this.game.config.width / 2, this.game.config.height);
+    this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 40);
     this.player.setScale(0.3);
     this.add.existing(this.player);
     this.player.setDepth(1);
+    console.log(this.player);
 
     // cria o grupo de maçãs
     this.apples = this.physics.add.group({
