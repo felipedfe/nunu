@@ -18,8 +18,9 @@ export class Game extends Scene {
 
     // cria player
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height);
-    this.player.setScale(0.2)
+    this.player.setScale(0.3)
     this.add.existing(this.player);
+    this.player.setDepth(1);
     console.log(this.player)
 
     // cria o grupo de maçãs
@@ -60,7 +61,16 @@ export class Game extends Scene {
   }
 
   collectApple(player, apple) {
-    apple.destroy(); // destroi a maçã quando o jogador pega ela
+    this.physics.world.removeCollider(apple.colliderWithPlayer);
+    
+    this.time.delayedCall(100, () => {
+      apple.destroy(); // destroi a maçã quando o jogador pega ela
+    })
+    player.play('eat');
+
+    this.time.delayedCall(200, () => {
+      player.play('move'); // volta para a animação de boca fechada
+    });
   }
 
   update() {
