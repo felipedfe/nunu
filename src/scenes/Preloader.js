@@ -31,7 +31,7 @@ export class Preloader extends Scene {
         this.load.image('logo', 'logo.png');
 
         this.load.image('player', 'player.png');
-        this.load.image('apple', 'apple.png');
+        this.load.image('apple', 'fruit.png');
 
         this.load.atlas('character', 'character.png', 'character.json');
     }

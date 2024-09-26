@@ -9,7 +9,7 @@ export class Game extends Scene {
 
   create() {
     this.camera = this.cameras.main;
-    this.camera.setBackgroundColor(0x404040);
+    this.camera.setBackgroundColor(0xffffff);
 
     // define as teclas de movimento
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -18,10 +18,9 @@ export class Game extends Scene {
 
     // cria player
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height);
-    this.player.setScale(0.3)
+    this.player.setScale(0.3);
     this.add.existing(this.player);
     this.player.setDepth(1);
-    console.log(this.player)
 
     // cria o grupo de maçãs
     this.apples = this.physics.add.group({
@@ -57,12 +56,14 @@ export class Game extends Scene {
     const apple = new Apple(this, x, 0);
     this.apples.add(apple);
     this.add.existing(apple);
+    apple.body.setVelocityY(30);
+    apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
     apple.body.setVelocityY(300);
   }
 
   collectApple(player, apple) {
     this.physics.world.removeCollider(apple.colliderWithPlayer);
-    
+
     this.time.delayedCall(100, () => {
       apple.destroy(); // destroi a maçã quando o jogador pega ela
     })
