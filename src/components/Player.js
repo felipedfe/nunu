@@ -16,7 +16,7 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     this.setOrigin(1, 1);
     scene.physics.world.enable(this);
-    this.body.setCollideWorldBounds(true);
+    // this.body.setCollideWorldBounds(true);
 
     // caixa de colisão
     this.body.setSize(200, 80);
@@ -34,6 +34,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     scene.physics.world.enable(this.wheels);
     this.wheels.body.setAllowGravity(false);
 
+    // guarda a posicao inicial do personagem para poder subir ou descer quando a rodinha está ativada
     this.Y_POSITION = this.y
   }
 
@@ -111,8 +112,6 @@ export class Player extends Phaser.GameObjects.Sprite {
       this.wheels.x = this.x - (this.width * this.scaleX) / 2;
 
       this.wheels.y = this.y + 5; // mantém as rodinhas na parte de baixo do personagem
-
-      // this.y = this.Y_POSITION - 20;
     }
   }
 }

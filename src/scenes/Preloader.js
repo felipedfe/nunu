@@ -29,10 +29,13 @@ export class Preloader extends Scene {
         this.load.setPath('assets');
 
         this.load.image('logo', 'logo.png');
+        this.load.image('bg', 'bg.png');
 
         this.load.image('player', 'player.png');
         this.load.image('apple', 'fruit.png');
         this.load.image('wheel', 'wheel.png');
+        this.load.image('tree1', 'tree1-v2.png');
+        this.load.image('tree2', 'tree2-v2.png');
 
         this.load.atlas('character', 'character.png', 'character.json');
     }
