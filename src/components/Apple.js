@@ -1,20 +1,26 @@
 import Phaser from 'phaser';
 
-export class Apple extends Phaser.GameObjects.Sprite {
+export class Apple extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, 'apple');
 
-    scene.physics.world.enable(this);
-    this.body.setCollideWorldBounds(true); 
-    this.body.setGravityY(300);
+    this.collected = false;
 
-    this.setScale(0.15)
+    // adiciona o objeto ao mundo físico e à cena
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
+
+    // configura o corpo físico arcade
+    this.setCollideWorldBounds(true); 
+    this.setGravityY(300);
+
+    this.setScale(0.15);
   }
 
   update() {
-    // console.log(this.scene)
+    // se a maçã sair da tela, ela será destruída
     if (this.y > this.scene.scale.height) {
-      this.destroy(); // destrói a maçã se ela sair da tela
+      this.destroy();
     }
   }
 }

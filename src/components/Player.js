@@ -49,7 +49,7 @@ export class Player extends Phaser.GameObjects.Sprite {
       // ativa as rodinhas
       this.wheels.setVisible(true);
       this.wheels.body.setAngularVelocity(360);
-      this.y = this.Y_POSITION - 20;
+      this.y = this.Y_POSITION - 30;
 
       // desativa o boost após 1 segundo
       // this.scene.time.delayedCall(1000, () => {
