@@ -1,12 +1,15 @@
 import { Scene } from 'phaser';
 import { Player } from '../components/Player';
 import { Apple } from '../components/Apple';
+import { PowerUp } from '../components/PowerUp';
 
 export class Game extends Scene {
   constructor() {
     super('Game');
     this.elapsedTime = 0;
     this.collectedApples = 0;
+    this.powerUp;
+    this.apples;
   }
 
   create() {
@@ -78,7 +81,9 @@ export class Game extends Scene {
 
     this.physics.add.overlap(this.player, this.apples, this.collectApple, null, this);
 
-    // eventos de tempo
+
+    // EVENTOS DE TEMPO
+    // macã
     this.time.addEvent({
       delay: 700, // intervalo entre as maçãs
       callback: this.spawnApple,
@@ -86,11 +91,19 @@ export class Game extends Scene {
       loop: true
     });
 
+    // timer
     this.time.addEvent({
       delay: 1000,
       callback: this.updateTime,
       callbackScope: this,
       loop: true,
+    })
+
+    // powerup
+    this.time.addEvent({
+      delay: 1000,
+      callback: this.spawnPowerUp,
+      callbackScope: this,
     })
 
     // FIM DO CREATE
@@ -138,6 +151,53 @@ export class Game extends Scene {
     });
   };
 
+  spawnPowerUp() {
+    // if (!this.powerUp) {
+      const x = Phaser.Math.Between(130, this.scale.width - 120);
+      
+      this.powerUp = new PowerUp(this, x, 0);
+      
+      this.add.existing(this.powerUp);
+      
+      this.powerUp.body.setVelocityY(30);
+      this.powerUp.body.setAngularVelocity(360);
+      this.powerUp.body.setVelocityY(500);
+      
+      this.time.addEvent({
+        delay: 200,
+        callback: this.powerUp.blink,
+        callbackScope: this.powerUp,
+        loop: true,
+      });
+
+      // overlap entre o player e o power-up
+      this.physics.add.overlap(this.player, this.powerUp, this.collectPowerUp, null, this);
+    // }
+  }
+  
+
+  collectPowerUp (player, powerUp) {
+    if (powerUp.collected) {
+      return
+    }
+
+    this.player.setTint(0xfff45e);
+
+    powerUp.collected = true;
+
+    powerUp.setActive(false);
+
+    this.time.delayedCall(100, () => {
+      powerUp.destroy();
+      this.powerUp = null;
+      this.player.clearTint();
+    });
+    player.play('eat');
+
+    this.time.delayedCall(200, () => {
+      player.play('move');
+    })
+  };
 
   update() {
     this.player.update(this.cursors, this.spaceBar);
