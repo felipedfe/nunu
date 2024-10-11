@@ -11,7 +11,7 @@ export class Apple extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     // configura o corpo físico arcade
-    this.setCollideWorldBounds(true); 
+    // this.setCollideWorldBounds(true); 
     this.setGravityY(300);
 
     this.setScale(0.15);

@@ -120,7 +120,6 @@ export class Game extends Scene {
     const apple = new Apple(this, x, 0);
     this.apples.add(apple);
     this.add.existing(apple);
-    apple.body.setVelocityY(30);
     apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
     apple.body.setVelocityY(500);
   };
@@ -159,9 +158,9 @@ export class Game extends Scene {
       
       this.add.existing(this.powerUp);
       
-      this.powerUp.body.setVelocityY(30);
       this.powerUp.body.setAngularVelocity(360);
       this.powerUp.body.setVelocityY(500);
+      console.log(this.powerUp.body.velocity)
       
       this.time.addEvent({
         delay: 200,
