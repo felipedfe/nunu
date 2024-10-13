@@ -42,7 +42,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     if (!this.isBoosting) {
       this.isBoosting = true;
       this.boostDirection = direction; // Salva a direção do boost
-      this.body.setMaxVelocity(this.velocity * 2); // Aumenta a velocidade máxima
+      this.body.setMaxVelocity(this.velocity * 1.5); // Aumenta a velocidade máxima
       // this.acceleration = this.boostAcceleration;
       this.deceleration = this.boostDeceleration;
 

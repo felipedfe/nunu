@@ -7,31 +7,35 @@ import { Preloader } from './scenes/Preloader';
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config = {
-    type: Phaser.AUTO,
-    // width: 1024,
-    width: 1150,
-    height: 768,
-    parent: 'game-container',
-    backgroundColor: '#ffffff',
-    scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
-    },
-    physics: {
-        default: 'arcade',
-        arcade: {
-          // debug: true,
-          debugBodyColor: 0xb0f2ff,
-          gravity: { y: 0 },
-        }
-      },
-    scene: [
-        Boot,
-        Preloader,
-        // MainMenu,
-        Game,
-        GameOver
-    ]
+  type: Phaser.AUTO,
+  // width: 1024,
+  width: 1150,
+  height: 768,
+  parent: 'game-container',
+  backgroundColor: '#ffffff',
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
+  // fps: {
+  //   target: 30,  // Define o FPS para 30 frames por segundo
+  //   forceSetTimeOut: true
+  // },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      // debug: true,
+      debugBodyColor: 0xb0f2ff,
+      gravity: { y: 0 },
+    }
+  },
+  scene: [
+    Boot,
+    Preloader,
+    // MainMenu,
+    Game,
+    GameOver
+  ]
 };
 
 export default new Phaser.Game(config);

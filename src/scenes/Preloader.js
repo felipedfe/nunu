@@ -37,6 +37,7 @@ export class Preloader extends Scene {
         this.load.image('tree2', 'tree2-v5.png');
         this.load.image('floor', 'floor.png');
         this.load.image('powerUp', 'power-up.png');
+        this.load.image('rain', 'rain-4.png');
 
         this.load.atlas('character', 'character.png', 'character.json');
     }

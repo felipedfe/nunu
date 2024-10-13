@@ -13,15 +13,16 @@ export class Game extends Scene {
     this.timeText = this.add.text(100, 300, 'Tempo: 0', {
       fontSize: '32px',
       fill: '#000'
-    });
+    }).setDepth(3);
 
     this.collectedApplesText = this.add.text(100, 350, 'Frutas: 0 / 50', {
       fontSize: '32px',
       fill: '#000'
-    })
+    }).setDepth(3);
 
     this.camera = this.cameras.main;
     // this.camera.setBackgroundColor(0x4a18ed);
+    this.camera.setBackgroundColor(0x000);
 
     // define as teclas de movimento
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -29,6 +30,13 @@ export class Game extends Scene {
     this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // cria cenário
+    // this.rain = this.add.tileSprite(0, -30, this.game.config.width, this.game.config.height, 'rain')
+    //   .setOrigin(0, 0)
+    //   .setDepth(2);
+
+    this.rainSpeedY = 8;
+    // this.rainSpeedX = 1;
+
     this.floor = this.add.image(0, 80, 'floor')
       .setOrigin(0, 0)
       .setDepth(1);
@@ -43,7 +51,7 @@ export class Game extends Scene {
     const treeScale = 1;
 
     this.tree1 = this.add.image(-40, -40, 'tree1')
-      .setScale(treeScale)
+    .setScale(treeScale)
       .setOrigin(0, 0)
       .setDepth(1);
 
@@ -80,7 +88,7 @@ export class Game extends Scene {
 
     // eventos de tempo
     this.time.addEvent({
-      delay: 700, // intervalo entre as maçãs
+      delay: 800, // intervalo entre as maçãs
       callback: this.spawnApple,
       callbackScope: this,
       loop: true
@@ -107,9 +115,13 @@ export class Game extends Scene {
     const apple = new Apple(this, x, 0);
     this.apples.add(apple);
     this.add.existing(apple);
-    apple.body.setVelocityY(30);
     apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
-    apple.body.setVelocityY(500);
+    apple.body.setVelocityY(200);
+
+    // const rectangle = this.add.rectangle(x, 10, 50, 10, 0xfabfff).setDepth(99)
+    // this.time.delayedCall(500, () => {
+    //   rectangle.destroy();
+    // })
   };
 
   collectApple(player, apple) {
@@ -142,8 +154,9 @@ export class Game extends Scene {
   update() {
     this.player.update(this.cursors, this.spaceBar);
 
-    if (this.elapsedTime === 4) {
-      console.log('FIM')
-    }
+    // this.rain.tilePositionY -= this.rainSpeedY;
+    // this.rain.tilePositionX -= this.rainSpeedX;
+
+    console.log(Math.floor(this.game.loop.actualFps))
   };
 }
