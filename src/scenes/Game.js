@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { Player } from '../components/Player';
 import { Apple } from '../components/Apple';
+import { SpikyFruit } from '../components/SpikyFruit';
 import { PowerUp } from '../components/PowerUp';
 
 export class Game extends Scene {
@@ -10,6 +11,7 @@ export class Game extends Scene {
     this.collectedApples = 0;
     this.powerUp;
     this.apples;
+    this.spikyFruits;
   }
 
   create() {
@@ -35,7 +37,7 @@ export class Game extends Scene {
     // define as teclas de movimento
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    // this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // cria cenário
     // this.rain = this.add.tileSprite(0, -30, this.game.config.width, this.game.config.height, 'rain')
@@ -93,12 +95,18 @@ export class Game extends Scene {
 
     this.physics.add.overlap(this.player, this.apples, this.collectApple, null, this);
 
+    // cria grupo de spikyFruits
+    this.spikyFruits = this.physics.add.group({
+      classType: SpikyFruit,
+      runChildUpdate: true
+    })
+
 
     // EVENTOS DE TEMPO
     // macã
     this.time.addEvent({
       delay: 800, // intervalo entre as maçãs
-      callback: this.spawnApple,
+      callback: this.spawnSpikyFruits,
       callbackScope: this,
       loop: true
     });
@@ -131,6 +139,7 @@ export class Game extends Scene {
   spawnApple() {
     const x = Phaser.Math.Between(130, this.scale.width - 120);
     const apple = new Apple(this, x, 0);
+    apple.setScale(0.15);
     this.apples.add(apple);
     this.add.existing(apple);
     apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
@@ -168,6 +177,18 @@ export class Game extends Scene {
     });
   };
 
+  spawnSpikyFruits() {
+    for (let i = 0; i < 5; i++) {
+      const x = Phaser.Math.Between(130, this.scale.width - 120);
+      const spikyFruit = new SpikyFruit(this, x, 0);
+      spikyFruit.setScale(0.15);
+      this.spikyFruits.add(spikyFruit);
+      this.add.existing(spikyFruit);
+      spikyFruit.body.setAngularVelocity(360);
+      spikyFruit.body.setVelocityY(500);
+    }
+  }
+  
   spawnPowerUp() {
     // if (!this.powerUp) {
       const x = Phaser.Math.Between(130, this.scale.width - 120);

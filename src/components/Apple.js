@@ -14,7 +14,7 @@ export class Apple extends Phaser.Physics.Arcade.Sprite {
     // this.setCollideWorldBounds(true); 
     this.setGravityY(300);
 
-    this.setScale(0.15);
+    // this.setScale(0.15);
   }
 
   update() {
