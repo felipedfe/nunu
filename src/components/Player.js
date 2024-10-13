@@ -51,10 +51,13 @@ export class Player extends Phaser.GameObjects.Sprite {
       this.wheels.body.setAngularVelocity(360);
       this.y = this.Y_POSITION - 30;
 
-      // desativa o boost após 1 segundo
-      // this.scene.time.delayedCall(1000, () => {
-      //   this.deactivateBoost();
-      // });
+      // efeito de piscar enquanto o boost está ativo
+      this.blinkEvent = this.scene.time.addEvent({
+        delay: 300,
+        callback: this.blink,
+        callbackScope: this,
+        loop: true,
+      });
     }
   }
 
@@ -64,23 +67,38 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.acceleration = this.initialAcceleration; // restaura a aceleração normal
 
     // desativa as rodinhas
-    this.wheels.setVisible(false);
     this.wheels.body.setAngularVelocity(0);
+    this.wheels.setVisible(false);
     this.y = this.Y_POSITION;
+
+    // remove o evento de piscar
+    if (this.blinkEvent) {
+      this.blinkEvent.remove(false);
+      this.clearTint();
+    }
+  }
+
+  blink() {
+    this.setTint(0xfff45e);
+
+    if (this.scene) {
+      this.scene.time.delayedCall(100, () => {
+        this.clearTint();
+      })
+    }
   }
 
   // atualiza o player com base nas entradas do teclado
   update(cursors) {
     if (cursors.left.isDown) {
       this.body.setAccelerationX(this.acceleration * -1); // move para a esquerda
-      // console.log(this.anims.currentAnim?.key !== 'eat')
       if (this.anims.currentAnim?.key !== 'eat' && (this.anims.currentAnim?.key !== 'move' || !this.anims.isPlaying)) {
         this.play('move');
       }
 
       // verifica se o jogador está mudando de direção enquanto o boost está ativo
       if (this.isBoosting && this.boostDirection !== 'left') {
-        this.deactivateBoost(); // desativa o boost ao mudar de direção
+        // this.deactivateBoost(); // desativa o boost ao mudar de direção
         // this.y = this.Y_POSITION;
       }
     } else if (cursors.right.isDown) {
@@ -91,7 +109,7 @@ export class Player extends Phaser.GameObjects.Sprite {
 
       // verifica se o jogador está mudando de direção enquanto o boost está ativo
       if (this.isBoosting && this.boostDirection !== 'right') {
-        this.deactivateBoost(); // desativa o boost ao mudar de direção
+        // this.deactivateBoost(); // desativa o boost ao mudar de direção
         // this.y = this.Y_POSITION;
       }
     } else {
@@ -99,14 +117,13 @@ export class Player extends Phaser.GameObjects.Sprite {
     }
 
     // verifica se a tecla de espaço foi pressionada para ativar o boost
-    // if (Phaser.Input.Keyboard.JustDown(cursors.space)) {
-    if (cursors.space.isDown) {
-      if (cursors.left.isDown) {
-        this.activateBoost('left');
-      } else if (cursors.right.isDown) {
-        this.activateBoost('right');
-      }
-    }
+    // if (cursors.space.isDown) {
+    //   if (cursors.left.isDown) {
+    //     this.activateBoost('left');
+    //   } else if (cursors.right.isDown) {
+    //     this.activateBoost('right');
+    //   }
+    // }
 
     if (this.wheels.visible) {
       this.wheels.x = this.x - (this.width * this.scaleX) / 2;

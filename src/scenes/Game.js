@@ -24,8 +24,13 @@ export class Game extends Scene {
     }).setDepth(3);
 
     this.camera = this.cameras.main;
+    this.time.delayedCall(1000, () => {
+      this.cameras.main.shake(500, 0.015); // duração, intensidade
+
+    })
+
     // this.camera.setBackgroundColor(0x4a18ed);
-    this.camera.setBackgroundColor(0x000);
+    // this.camera.setBackgroundColor(0x000);
 
     // define as teclas de movimento
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -49,7 +54,6 @@ export class Game extends Scene {
     this.player.setScale(0.3);
     this.add.existing(this.player);
     this.player.setDepth(1);
-    console.log(this.player);
 
     const treeScale = 1;
 
@@ -109,9 +113,10 @@ export class Game extends Scene {
 
     // powerup
     this.time.addEvent({
-      delay: 1000,
+      delay: 20000,
       callback: this.spawnPowerUp,
       callbackScope: this,
+      loop: true,
     })
 
     // FIM DO CREATE
@@ -129,7 +134,7 @@ export class Game extends Scene {
     this.apples.add(apple);
     this.add.existing(apple);
     apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
-    apple.body.setVelocityY(200);
+    apple.body.setVelocityY(500);
 
     // const rectangle = this.add.rectangle(x, 10, 50, 10, 0xfabfff).setDepth(99)
     // this.time.delayedCall(500, () => {
@@ -172,8 +177,8 @@ export class Game extends Scene {
       this.add.existing(this.powerUp);
       
       this.powerUp.body.setAngularVelocity(360);
-      this.powerUp.body.setVelocityY(500);
-      console.log(this.powerUp.body.velocity)
+      // this.powerUp.body.setVelocityY(500);
+      this.powerUp.body.setVelocityY(250);
       
       this.time.addEvent({
         delay: 200,
@@ -187,13 +192,12 @@ export class Game extends Scene {
     // }
   }
   
-
   collectPowerUp (player, powerUp) {
     if (powerUp.collected) {
       return
     }
 
-    this.player.setTint(0xfff45e);
+    player.setTint(0xfff45e);
 
     powerUp.collected = true;
 
@@ -201,18 +205,26 @@ export class Game extends Scene {
 
     this.time.delayedCall(100, () => {
       powerUp.destroy();
-      this.powerUp = null;
-      this.player.clearTint();
+      powerUp = null;
+      // player.clearTint();
     });
     player.play('eat');
-
+    player.activateBoost();
+    
     this.time.delayedCall(200, () => {
       player.play('move');
+    })
+
+    this.time.delayedCall(8000, () => {
+      player.deactivateBoost();
     })
   };
 
   update() {
-    this.player.update(this.cursors, this.spaceBar);
+    this.player.update(
+      this.cursors, 
+      // this.spaceBar
+    );
 
     // this.rain.tilePositionY -= this.rainSpeedY;
     // this.rain.tilePositionX -= this.rainSpeedX;
