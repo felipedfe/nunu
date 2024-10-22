@@ -12,9 +12,12 @@ export class Game extends Scene {
     this.powerUp;
     this.apples;
     this.spikyFruits;
+    this.spikyFruitPatternIndex = 0;
   }
 
   create() {
+
+    
     this.timeText = this.add.text(100, 300, 'Tempo: 0', {
       fontSize: '32px',
       fill: '#000'
@@ -60,7 +63,7 @@ export class Game extends Scene {
     const treeScale = 1;
 
     this.tree1 = this.add.image(-40, -40, 'tree1')
-    .setScale(treeScale)
+      .setScale(treeScale)
       .setOrigin(0, 0)
       .setDepth(1);
 
@@ -105,7 +108,7 @@ export class Game extends Scene {
     // EVENTOS DE TEMPO
     // macã
     this.time.addEvent({
-      delay: 800, // intervalo entre as maçãs
+      delay: 1500, // intervalo entre as maçãs
       callback: this.spawnSpikyFruits,
       callbackScope: this,
       loop: true
@@ -177,43 +180,80 @@ export class Game extends Scene {
     });
   };
 
-  spawnSpikyFruits() {
-    for (let i = 0; i < 5; i++) {
-      const x = Phaser.Math.Between(130, this.scale.width - 120);
-      const spikyFruit = new SpikyFruit(this, x, 0);
-      spikyFruit.setScale(0.15);
-      this.spikyFruits.add(spikyFruit);
-      this.add.existing(spikyFruit);
-      spikyFruit.body.setAngularVelocity(360);
-      spikyFruit.body.setVelocityY(500);
+spawnSpikyFruits() {
+  // esses sao os padroes de "buracos" na sequencia de spikyFruits
+  const SpikyFruitsPattern = {
+    0: 1, // buraco 2
+    1: 3, 
+    2: 4, 
+    3: 6,
+    4: 8,
+    5: 5,
+    6: 1,
+    7: 2,
+    8: 5,
+    9: 8,
+    10: 5,  
+  };
+
+  let xPosition = 150;
+  let space = 100;
+
+  // usando o spikyFruitPatternIndex para pegar o buraco do padrão atual
+  const holeIndex = SpikyFruitsPattern[this.spikyFruitPatternIndex];
+
+  for (let i = 0; i < 9; i++) {
+    // verifica se o índice atual é o buraco
+    if (i === holeIndex) {
+      // incrementa a posição x e pula a criação da fruta
+      xPosition += space;
+      continue;
     }
+
+    const x = xPosition;
+    const spikyFruit = new SpikyFruit(this, x, 0);
+    spikyFruit.setScale(0.15);
+    this.spikyFruits.add(spikyFruit);
+    this.add.existing(spikyFruit);
+    spikyFruit.body.setAngularVelocity(360);
+    spikyFruit.body.setVelocityY(500);
+
+    xPosition += space;
   }
-  
+
+  this.spikyFruitPatternIndex += 1;
+
+  // se spikyFruitPatternIndex exceder o número de padrões, volta para o primeiro
+  if (this.spikyFruitPatternIndex >= Object.keys(SpikyFruitsPattern).length) {
+    this.spikyFruitPatternIndex = 0;
+  }
+}
+
   spawnPowerUp() {
     // if (!this.powerUp) {
-      const x = Phaser.Math.Between(130, this.scale.width - 120);
-      
-      this.powerUp = new PowerUp(this, x, 0);
-      
-      this.add.existing(this.powerUp);
-      
-      this.powerUp.body.setAngularVelocity(360);
-      // this.powerUp.body.setVelocityY(500);
-      this.powerUp.body.setVelocityY(250);
-      
-      this.time.addEvent({
-        delay: 200,
-        callback: this.powerUp.blink,
-        callbackScope: this.powerUp,
-        loop: true,
-      });
+    const x = Phaser.Math.Between(130, this.scale.width - 120);
 
-      // overlap entre o player e o power-up
-      this.physics.add.overlap(this.player, this.powerUp, this.collectPowerUp, null, this);
+    this.powerUp = new PowerUp(this, x, 0);
+
+    this.add.existing(this.powerUp);
+
+    this.powerUp.body.setAngularVelocity(360);
+    // this.powerUp.body.setVelocityY(500);
+    this.powerUp.body.setVelocityY(250);
+
+    this.time.addEvent({
+      delay: 200,
+      callback: this.powerUp.blink,
+      callbackScope: this.powerUp,
+      loop: true,
+    });
+
+    // overlap entre o player e o power-up
+    this.physics.add.overlap(this.player, this.powerUp, this.collectPowerUp, null, this);
     // }
   }
-  
-  collectPowerUp (player, powerUp) {
+
+  collectPowerUp(player, powerUp) {
     if (powerUp.collected) {
       return
     }
@@ -231,7 +271,7 @@ export class Game extends Scene {
     });
     player.play('eat');
     player.activateBoost();
-    
+
     this.time.delayedCall(200, () => {
       player.play('move');
     })
@@ -243,7 +283,7 @@ export class Game extends Scene {
 
   update() {
     this.player.update(
-      this.cursors, 
+      this.cursors,
       // this.spaceBar
     );
 
