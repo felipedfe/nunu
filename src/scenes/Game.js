@@ -16,8 +16,8 @@ export class Game extends Scene {
   }
 
   create() {
+    this.physics.world.setBounds(130, 0, this.game.config.width - 240, this.game.config.height);
 
-    
     this.timeText = this.add.text(100, 300, 'Tempo: 0', {
       fontSize: '32px',
       fill: '#000'
@@ -50,45 +50,45 @@ export class Game extends Scene {
     this.rainSpeedY = 8;
     // this.rainSpeedX = 1;
 
-    this.floor = this.add.image(0, 80, 'floor')
+    this.floor = this.add.image(0, 80, 'stage-1', 'floor')
       .setOrigin(0, 0)
       .setDepth(1);
 
     // cria player
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 30);
-    this.player.setScale(0.3);
+    this.player.setScale(0.9);
     this.add.existing(this.player);
     this.player.setDepth(1);
 
     const treeScale = 1;
 
-    this.tree1 = this.add.image(-40, -40, 'tree1')
-      .setScale(treeScale)
+    this.tree1 = this.add.image(-40, -40, 'stage-1', 'tree1')
+      // .setScale(treeScale)
       .setOrigin(0, 0)
       .setDepth(1);
 
-    this.tree2 = this.add.image(this.game.config.width, -40, 'tree2')
-      .setScale(treeScale)
+    this.tree2 = this.add.image(this.game.config.width, -40, 'stage-1', 'tree2')
+      // .setScale(treeScale) 
       .setOrigin(0, 0)
       .setDepth(1);
 
     this.tree2.x = this.game.config.width - ((this.tree2.width * treeScale) - 40);
 
     // essas caixas são pro player não ultrapassar as árvores
-    this.leftLimitBox = this.physics.add.staticImage(90, 0, null)
-      .setSize(50, this.game.config.height)
-      .setOffset(0, 50)
-      .setDepth(1)
-      .setVisible(false);
+    // this.leftLimitBox = this.physics.add.staticImage(90, 0, null)
+    //   .setSize(50, this.game.config.height)
+    //   .setOffset(0, 50)
+    //   .setDepth(1)
+    //   .setVisible(false);
 
-    this.rightLimitBox = this.physics.add.staticImage(this.game.config.width - 95, 0, null)
-      .setSize(50, this.game.config.height)
-      .setOffset(0, 50)
-      .setDepth(1)
-      .setVisible(false);
+    // this.rightLimitBox = this.physics.add.staticImage(this.game.config.width - 95, 0, null)
+    //   .setSize(50, this.game.config.height)
+    //   .setOffset(0, 50)
+    //   .setDepth(1)
+    //   .setVisible(false);
 
-    this.physics.add.collider(this.player, this.leftLimitBox);
-    this.physics.add.collider(this.player, this.rightLimitBox);
+    // this.physics.add.collider(this.player, this.leftLimitBox);
+    // this.physics.add.collider(this.player, this.rightLimitBox);
 
     // cria o grupo de maçãs
     this.apples = this.physics.add.group({
@@ -104,12 +104,12 @@ export class Game extends Scene {
       runChildUpdate: true
     })
 
-
     // EVENTOS DE TEMPO
     // macã
     this.time.addEvent({
       delay: 1500, // intervalo entre as maçãs
-      callback: this.spawnSpikyFruits,
+      // callback: this.spawnSpikyFruits,
+      callback: this.spawnApple,
       callbackScope: this,
       loop: true
     });
@@ -124,7 +124,7 @@ export class Game extends Scene {
 
     // powerup
     this.time.addEvent({
-      delay: 20000,
+      delay: 2000,
       callback: this.spawnPowerUp,
       callbackScope: this,
       loop: true,
@@ -142,7 +142,7 @@ export class Game extends Scene {
   spawnApple() {
     const x = Phaser.Math.Between(130, this.scale.width - 120);
     const apple = new Apple(this, x, 0);
-    apple.setScale(0.15);
+    // apple.setScale(0.15);
     this.apples.add(apple);
     this.add.existing(apple);
     apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
@@ -180,54 +180,54 @@ export class Game extends Scene {
     });
   };
 
-spawnSpikyFruits() {
-  // esses sao os padroes de "buracos" na sequencia de spikyFruits
-  const SpikyFruitsPattern = {
-    0: 1, // buraco 2
-    1: 3, 
-    2: 4, 
-    3: 6,
-    4: 8,
-    5: 5,
-    6: 1,
-    7: 2,
-    8: 5,
-    9: 8,
-    10: 5,  
-  };
+  spawnSpikyFruits() {
+    // esses sao os padroes de "buracos" na sequencia de spikyFruits
+    const SpikyFruitsPattern = {
+      0: 2, // buraco 3
+      1: 3,
+      2: 4,
+      3: 6,
+      4: 8,
+      5: 5,
+      6: 1,
+      7: 2,
+      8: 5,
+      9: 8,
+      10: 5,
+    };
 
-  let xPosition = 150;
-  let space = 100;
+    let xPosition = 150;
+    let space = 100;
 
-  // usando o spikyFruitPatternIndex para pegar o buraco do padrão atual
-  const holeIndex = SpikyFruitsPattern[this.spikyFruitPatternIndex];
+    // usando o spikyFruitPatternIndex para pegar o buraco do padrão atual
+    const holeIndex = SpikyFruitsPattern[this.spikyFruitPatternIndex];
 
-  for (let i = 0; i < 9; i++) {
-    // verifica se o índice atual é o buraco
-    if (i === holeIndex) {
-      // incrementa a posição x e pula a criação da fruta
+    for (let i = 0; i < 9; i++) {
+      // verifica se o índice atual é o buraco
+      if (i === holeIndex) {
+        // incrementa a posição x e pula a criação da fruta
+        xPosition += space;
+        continue;
+      }
+
+      const x = xPosition;
+      const spikyFruit = new SpikyFruit(this, x, 0);
+      spikyFruit.setScale(0.15);
+      this.spikyFruits.add(spikyFruit);
+      this.add.existing(spikyFruit);
+      spikyFruit.body.setAngularVelocity(360);
+      spikyFruit.body.setVelocityY(500);
+
       xPosition += space;
-      continue;
     }
 
-    const x = xPosition;
-    const spikyFruit = new SpikyFruit(this, x, 0);
-    spikyFruit.setScale(0.15);
-    this.spikyFruits.add(spikyFruit);
-    this.add.existing(spikyFruit);
-    spikyFruit.body.setAngularVelocity(360);
-    spikyFruit.body.setVelocityY(500);
+    this.spikyFruitPatternIndex += 1;
 
-    xPosition += space;
+    // se spikyFruitPatternIndex exceder o número de padrões, volta para o primeiro
+    if (this.spikyFruitPatternIndex >= Object.keys(SpikyFruitsPattern).length) {
+      this.spikyFruitPatternIndex = 0;
+    }
   }
-
-  this.spikyFruitPatternIndex += 1;
-
-  // se spikyFruitPatternIndex exceder o número de padrões, volta para o primeiro
-  if (this.spikyFruitPatternIndex >= Object.keys(SpikyFruitsPattern).length) {
-    this.spikyFruitPatternIndex = 0;
-  }
-}
 
   spawnPowerUp() {
     // if (!this.powerUp) {
@@ -290,6 +290,8 @@ spawnSpikyFruits() {
     // this.rain.tilePositionY -= this.rainSpeedY;
     // this.rain.tilePositionX -= this.rainSpeedX;
 
-    console.log(Math.floor(this.game.loop.actualFps))
+    // console.log(Math.floor(this.game.loop.actualFps))
+
+    // console.log(this.apples.getTotalUsed());
   };
 }

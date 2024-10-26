@@ -1,0 +1,124 @@
+{
+	"textures": [
+		{
+			"image": "stage-1",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1906,
+				"h": 894
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "floor",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1150,
+						"h": 768
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 642,
+						"w": 1150,
+						"h": 126
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 1150,
+						"h": 126
+					}
+				},
+				{
+					"filename": "tree1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 705,
+						"h": 768
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 700,
+						"h": 768
+					},
+					"frame": {
+						"x": 1150,
+						"y": 0,
+						"w": 700,
+						"h": 768
+					}
+				},
+				{
+					"filename": "power-up",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 33,
+						"h": 46
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 2,
+						"w": 30,
+						"h": 42
+					},
+					"frame": {
+						"x": 1850,
+						"y": 0,
+						"w": 30,
+						"h": 42
+					}
+				},
+				{
+					"filename": "apple",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 31,
+						"h": 45
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 2,
+						"w": 26,
+						"h": 40
+					},
+					"frame": {
+						"x": 1880,
+						"y": 0,
+						"w": 26,
+						"h": 40
+					}
+				},
+				{
+					"filename": "tree2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 697,
+						"h": 768
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 0,
+						"w": 691,
+						"h": 768
+					},
+					"frame": {
+						"x": 0,
+						"y": 126,
+						"w": 691,
+						"h": 768
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

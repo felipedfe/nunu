@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 export class PowerUp extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, 'powerUp');
+    super(scene, x, y, 'stage-1', 'power-up');
 
     this.collected = false;
 
@@ -14,7 +14,7 @@ export class PowerUp extends Phaser.Physics.Arcade.Sprite {
     // this.setCollideWorldBounds(true); 
     this.setGravityY(120);
 
-    this.setScale(0.15);
+    // this.setScale(0.15);
 
     // this.scene.time.addEvent({
     //   delay: 1000,
@@ -24,7 +24,7 @@ export class PowerUp extends Phaser.Physics.Arcade.Sprite {
     // })
   }
 
-  blink () {
+  blink() {
     this.setTint(0xfff45e);
 
     if (this.scene) {

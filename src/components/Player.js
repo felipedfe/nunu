@@ -16,11 +16,14 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     this.setOrigin(1, 1);
     scene.physics.world.enable(this);
-    // this.body.setCollideWorldBounds(true);
+    this.body.setCollideWorldBounds(true);
 
     // caixa de colisão
-    this.body.setSize(200, 80);
-    this.body.setOffset(100, 30);
+    this.body.setSize(65, 25);
+    this.body.setOffset(35, 10);
+
+    // this.body.setSize(200, 80);
+    // this.body.setOffset(100, 30);
 
     this.play('move');
 
@@ -28,9 +31,9 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.body.setMaxVelocity(this.velocity); // velocidade máxima para evitar que o jogador acelere infinitamente
 
     // rodinhas
-    this.wheels = scene.add.sprite(this.x - (this.width * this.scaleX) / 2, this.y + 5, 'wheel');
+    this.wheels = scene.add.sprite(this.x - (this.width * this.scaleX) / 2, this.y + 5, 'player', 'wheel');
     this.wheels.setVisible(false);
-    this.wheels.setScale(0.2)
+    // this.wheels.setScale(0.2)
     scene.physics.world.enable(this.wheels);
     this.wheels.body.setAllowGravity(false);
 
