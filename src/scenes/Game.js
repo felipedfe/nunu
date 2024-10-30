@@ -50,7 +50,7 @@ export class Game extends Scene {
     this.rainSpeedY = 8;
     // this.rainSpeedX = 1;
 
-    this.floor = this.add.image(0, 80, 'stage-1', 'floor')
+    this.floor = this.add.image(0, 80, 'stage-1-v2', 'floor')
       .setOrigin(0, 0)
       .setDepth(1);
 
@@ -62,12 +62,12 @@ export class Game extends Scene {
 
     const treeScale = 1;
 
-    this.tree1 = this.add.image(-40, -40, 'stage-1', 'tree1')
+    this.tree1 = this.add.image(-40, -40, 'stage-1-v2', 'tree1')
       // .setScale(treeScale)
       .setOrigin(0, 0)
       .setDepth(1);
 
-    this.tree2 = this.add.image(this.game.config.width, -40, 'stage-1', 'tree2')
+    this.tree2 = this.add.image(this.game.config.width, -40, 'stage-1-v2', 'tree2')
       // .setScale(treeScale) 
       .setOrigin(0, 0)
       .setDepth(1);
@@ -124,7 +124,7 @@ export class Game extends Scene {
 
     // powerup
     this.time.addEvent({
-      delay: 2000,
+      delay: 20000,
       callback: this.spawnPowerUp,
       callbackScope: this,
       loop: true,
@@ -183,7 +183,7 @@ export class Game extends Scene {
   spawnSpikyFruits() {
     // esses sao os padroes de "buracos" na sequencia de spikyFruits
     const SpikyFruitsPattern = {
-      0: 2, // buraco 3
+      0: 1, // buraco 3
       1: 3,
       2: 4,
       3: 6,
@@ -212,7 +212,7 @@ export class Game extends Scene {
 
       const x = xPosition;
       const spikyFruit = new SpikyFruit(this, x, 0);
-      spikyFruit.setScale(0.15);
+      // spikyFruit.setScale(0.15);
       this.spikyFruits.add(spikyFruit);
       this.add.existing(spikyFruit);
       spikyFruit.body.setAngularVelocity(360);

@@ -1,10 +1,10 @@
 {
 	"textures": [
 		{
-			"image": "stage-1",
+			"image": "stage-1-v2",
 			"format": "RGBA8888",
 			"size": {
-				"w": 1906,
+				"w": 1913,
 				"h": 894
 			},
 			"scale": 1,
@@ -52,6 +52,27 @@
 					}
 				},
 				{
+					"filename": "spiky",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 33,
+						"h": 36
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 33,
+						"h": 36
+					},
+					"frame": {
+						"x": 1850,
+						"y": 0,
+						"w": 33,
+						"h": 36
+					}
+				},
+				{
 					"filename": "power-up",
 					"rotated": false,
 					"trimmed": true,
@@ -66,7 +87,7 @@
 						"h": 42
 					},
 					"frame": {
-						"x": 1850,
+						"x": 1883,
 						"y": 0,
 						"w": 30,
 						"h": 42
@@ -87,8 +108,8 @@
 						"h": 40
 					},
 					"frame": {
-						"x": 1880,
-						"y": 0,
+						"x": 1850,
+						"y": 36,
 						"w": 26,
 						"h": 40
 					}

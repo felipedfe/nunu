@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 export class PowerUp extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, 'stage-1', 'power-up');
+    super(scene, x, y, 'stage-1-v2', 'power-up');
 
     this.collected = false;
 

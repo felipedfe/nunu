@@ -18,13 +18,13 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
   // fps: {
-  //   target: 30,  // Define o FPS para 30 frames por segundo
+  //   target: 30,
   //   forceSetTimeOut: true
   // },
   physics: {
     default: 'arcade',
     arcade: {
-      debug: true,
+      // debug: true,
       // debugBodyColor: 0xb0f2ff,
       gravity: { y: 0 },
     }
