@@ -8,6 +8,7 @@ export class Game extends Scene {
   constructor() {
     super('Game');
     this.elapsedTime = 0;
+    this.allDroppedApples = 0;
     this.collectedApples = 0;
     this.powerUp;
     this.apples;
@@ -23,7 +24,12 @@ export class Game extends Scene {
       fill: '#000'
     }).setDepth(3);
 
-    this.collectedApplesText = this.add.text(100, 350, 'Frutas: 0 / 50', {
+    this.collectedApplesText = this.add.text(100, 350, 'Frutas coletadas: 0', {
+      fontSize: '32px',
+      fill: '#000'
+    }).setDepth(3);
+
+    this.allApplesText = this.add.text(100, 250, 'Frutas total: 0', {
       fontSize: '32px',
       fill: '#000'
     }).setDepth(3);
@@ -140,6 +146,8 @@ export class Game extends Scene {
   }
 
   spawnApple() {
+    this.allDroppedApples += 1;
+    this.allApplesText.setText('Frutas total: ' + this.allDroppedApples);
     const x = Phaser.Math.Between(130, this.scale.width - 120);
     const apple = new Apple(this, x, 0);
     // apple.setScale(0.15);
@@ -170,7 +178,7 @@ export class Game extends Scene {
       // apple.disableBody(true, false);
       apple.destroy(); // destroi a maçã quando o jogador pega ela
       this.collectedApples += 1;
-      this.collectedApplesText.setText('Frutas: ' + this.collectedApples + ' / 50');
+      this.collectedApplesText.setText('Frutas coletadas: ' + this.collectedApples);
       this.player.clearTint();
     });
     player.play('eat');
