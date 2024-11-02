@@ -125,6 +125,7 @@ export class Game extends Scene {
       delay: 1500, // intervalo entre as maçãs
       // callback: this.spawnSpikyFruits,
       callback: this.spawnApple,
+      // callback: this.spawnZigZagApples,
       callbackScope: this,
       loop: true
     });
@@ -136,7 +137,8 @@ export class Game extends Scene {
       // cria o evento das frutas espinhosas
       this.spikyFruitEvent = this.time.addEvent({
         delay: 3000,
-        callback: this.spawnSpikyFruits,
+        // callback: this.spawnSpikyFruits,
+        callback: this.spawnZigZagApples,
         callbackScope: this,
         loop: true
       });
@@ -224,7 +226,7 @@ export class Game extends Scene {
       yoyo: true,               // Vai e volta (zigue-zague)
       repeat: -1,               // Repetição infinita
       duration: 500,            // Duração do movimento para um lado (500ms)
-      ease: 'Sine.easeInOut' 
+      ease: 'Sine.easeInOut'
     });
   };
 
@@ -405,6 +407,16 @@ export class Game extends Scene {
       },
       callbackScope: this
     });
+
+    this.time.addEvent({
+      delay: 3000,
+      callback: () => {
+        this.camera.shake(500, 0.015); // duração, intensidade
+        this.bird.play('peck')
+      },
+      callbackScope: this,
+      loop: true
+    })
   }
 
   ///////////////////////////// UPDATE ////////////////////////////////
