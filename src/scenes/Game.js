@@ -131,8 +131,9 @@ export class Game extends Scene {
     });
 
     // frutas espinhosas
-    this.time.delayedCall(10000, () => { // tempo em milissegundos
+    this.time.delayedCall(25000, () => { // tempo em milissegundos
       this.appleEvent.remove(); // para o evento das maçãs
+      // this.showWoodpecker()
 
       // cria o evento das frutas espinhosas
       // this.spikyFruitEvent = this.time.addEvent({
@@ -145,7 +146,7 @@ export class Game extends Scene {
     }, null, this);
 
     // pica-pau
-    this.time.delayedCall(10000, () => {
+    this.time.delayedCall(22000, () => {
       this.showWoodpecker();
     });
 
