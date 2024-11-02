@@ -135,13 +135,13 @@ export class Game extends Scene {
       this.appleEvent.remove(); // para o evento das maçãs
 
       // cria o evento das frutas espinhosas
-      this.spikyFruitEvent = this.time.addEvent({
-        delay: 3000,
-        // callback: this.spawnSpikyFruits,
-        callback: this.spawnZigZagApples,
-        callbackScope: this,
-        loop: true
-      });
+      // this.spikyFruitEvent = this.time.addEvent({
+      //   delay: 1500,
+      //   callback: this.spawnSpikyFruits,
+      //   // callback: this.spawnZigZagApples,
+      //   callbackScope: this,
+      //   loop: true
+      // });
     }, null, this);
 
     // pica-pau
@@ -404,19 +404,31 @@ export class Game extends Scene {
         this.bird.setTexture('pp-peck', 'pp-peck-2')
         this.bird.stop();
         this.bird.x = 1012;
+
+        this.time.addEvent({
+          delay: 1400,
+          callback: () => {
+            this.camera.shake(500, 0.010); // duração, intensidade
+            this.bird.play('peck');
+            this.spawnZigZagApples();
+          },
+          callbackScope: this,
+          loop: true
+        })
       },
       callbackScope: this
     });
 
-    this.time.addEvent({
-      delay: 3000,
-      callback: () => {
-        this.camera.shake(500, 0.015); // duração, intensidade
-        this.bird.play('peck')
-      },
-      callbackScope: this,
-      loop: true
-    })
+    // this.time.addEvent({
+    //   delay: 3000,
+    //   callback: () => {
+    //     this.camera.shake(500, 0.015); // duração, intensidade
+    //     this.bird.play('peck');
+    //     this.spawnZigZagApples();
+    //   },
+    //   callbackScope: this,
+    //   loop: true
+    // })
   }
 
   ///////////////////////////// UPDATE ////////////////////////////////

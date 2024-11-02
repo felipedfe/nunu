@@ -84,7 +84,7 @@ export class Preloader extends Scene {
                 { key: 'pp-peck', frame: 'pp-peck-2' }
             ],
             frameRate: 10,
-            repeat: 4,
+            repeat: 2,
         })
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
