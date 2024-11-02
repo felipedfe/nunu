@@ -1,0 +1,61 @@
+{
+	"textures": [
+		{
+			"image": "pp-peck",
+			"format": "RGBA8888",
+			"size": {
+				"w": 114,
+				"h": 335
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "pp-peck-2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 116,
+						"h": 169
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 114,
+						"h": 168
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 114,
+						"h": 168
+					}
+				},
+				{
+					"filename": "pp-peck-1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 119,
+						"h": 169
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 1,
+						"w": 98,
+						"h": 167
+					},
+					"frame": {
+						"x": 0,
+						"y": 168,
+						"w": 98,
+						"h": 167
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

@@ -19,6 +19,32 @@ export class Game extends Scene {
   create() {
     this.physics.world.setBounds(130, 0, this.game.config.width - 240, this.game.config.height);
 
+    // cria player
+    this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 30);
+    this.player.setScale(0.9);
+    this.add.existing(this.player);
+    this.player.setDepth(2);
+
+    // // cria pica-pau
+    // this.bird = this.add.sprite(0, 300, 'pp-flying');
+    // this.bird.play('fly');
+
+    // this.tweens.add({
+    //   targets: this.bird,
+    //   x: 950,              // posicao final no eixo X
+    //   duration: 2000,
+    //   // ease: 'Sine.easeOut',
+    //   ease: 'linear',
+    //   onComplete: () => {
+    //     // this.bird.play('peck');
+    //     this.bird.setTexture('pp-peck', 'pp-peck-2')
+    //     this.bird.stop();
+    //     this.bird.x = 1012;
+    //   },
+    //   callbackScope: this
+    // });
+
+    // TEXTO
     this.timeText = this.add.text(100, 300, 'Tempo: 0', {
       fontSize: '32px',
       fill: '#000'
@@ -34,12 +60,13 @@ export class Game extends Scene {
       fill: '#000'
     }).setDepth(3);
 
+    this.lifeText = this.add.text(100, 200, 'Life: ' + this.player.life, {
+      fontSize: '32px',
+      fill: '#ff0000'
+    }).setDepth(3);
+
+    // CAMERA
     this.camera = this.cameras.main;
-    this.time.delayedCall(1000, () => {
-      this.cameras.main.shake(500, 0.015); // duração, intensidade
-
-    })
-
     // this.camera.setBackgroundColor(0x4a18ed);
     // this.camera.setBackgroundColor(0x000);
 
@@ -48,53 +75,32 @@ export class Game extends Scene {
 
     // this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    // cria cenário
-    // this.rain = this.add.tileSprite(0, -30, this.game.config.width, this.game.config.height, 'rain')
-    //   .setOrigin(0, 0)
-    //   .setDepth(2);
-
-    this.rainSpeedY = 8;
+    // CENÁRIO
+    this.rainSpeedY = 3;
     // this.rainSpeedX = 1;
 
-    this.floor = this.add.image(0, 80, 'stage-1-v2', 'floor')
+    // this.rain = this.add.tileSprite(0, -30, this.game.config.width, this.game.config.height, 'rain')
+    //   .setOrigin(0, 0)
+    //   .setDepth(2)
+    //   // .setAlpha(0.5)
+
+    this.floor = this.add.image(0, 80, 'stage-1', 'floor')
       .setOrigin(0, 0)
       .setDepth(1);
 
-    // cria player
-    this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 30);
-    this.player.setScale(0.9);
-    this.add.existing(this.player);
-    this.player.setDepth(1);
-
     const treeScale = 1;
 
-    this.tree1 = this.add.image(-40, -40, 'stage-1-v2', 'tree1')
+    this.tree1 = this.add.image(-40, -40, 'stage-1', 'tree1')
       // .setScale(treeScale)
       .setOrigin(0, 0)
       .setDepth(1);
 
-    this.tree2 = this.add.image(this.game.config.width, -40, 'stage-1-v2', 'tree2')
+    this.tree2 = this.add.image(this.game.config.width, -40, 'stage-1', 'tree2')
       // .setScale(treeScale) 
       .setOrigin(0, 0)
       .setDepth(1);
 
     this.tree2.x = this.game.config.width - ((this.tree2.width * treeScale) - 40);
-
-    // essas caixas são pro player não ultrapassar as árvores
-    // this.leftLimitBox = this.physics.add.staticImage(90, 0, null)
-    //   .setSize(50, this.game.config.height)
-    //   .setOffset(0, 50)
-    //   .setDepth(1)
-    //   .setVisible(false);
-
-    // this.rightLimitBox = this.physics.add.staticImage(this.game.config.width - 95, 0, null)
-    //   .setSize(50, this.game.config.height)
-    //   .setOffset(0, 50)
-    //   .setDepth(1)
-    //   .setVisible(false);
-
-    // this.physics.add.collider(this.player, this.leftLimitBox);
-    // this.physics.add.collider(this.player, this.rightLimitBox);
 
     // cria o grupo de maçãs
     this.apples = this.physics.add.group({
@@ -110,15 +116,44 @@ export class Game extends Scene {
       runChildUpdate: true
     })
 
+    this.physics.add.overlap(this.player, this.spikyFruits, this.hit, null, this);
+
     // EVENTOS DE TEMPO
     // macã
-    this.time.addEvent({
+    this.appleEvent = this.time.addEvent({
+      // delay: 1500, // intervalo entre as maçãs
       delay: 1500, // intervalo entre as maçãs
       // callback: this.spawnSpikyFruits,
       callback: this.spawnApple,
       callbackScope: this,
       loop: true
     });
+
+    // frutas espinhosas
+    this.time.delayedCall(10000, () => { // tempo em milissegundos
+      this.appleEvent.remove(); // para o evento das maçãs
+
+      // cria o evento das frutas espinhosas
+      this.spikyFruitEvent = this.time.addEvent({
+        delay: 3000,
+        callback: this.spawnSpikyFruits,
+        callbackScope: this,
+        loop: true
+      });
+    }, null, this);
+
+    // pica-pau
+    this.time.delayedCall(10000, () => {
+      this.showWoodpecker();
+    });
+
+    // vento
+    // this.time.addEvent({
+    //   delay: 3500,
+    //   callback: this.wind,
+    //   callbackScope: this,
+    //   loop: true,
+    // });
 
     // timer
     this.time.addEvent({
@@ -136,7 +171,7 @@ export class Game extends Scene {
       loop: true,
     })
 
-    // FIM DO CREATE
+    /////////////////////////// FIM DO CREATE //////////////////////////////
   };
 
   updateTime() {
@@ -149,17 +184,48 @@ export class Game extends Scene {
     this.allDroppedApples += 1;
     this.allApplesText.setText('Frutas total: ' + this.allDroppedApples);
     const x = Phaser.Math.Between(130, this.scale.width - 120);
-    const apple = new Apple(this, x, 0);
+    const apple = new Apple(this, x, 0, 'apple');
     // apple.setScale(0.15);
     this.apples.add(apple);
     this.add.existing(apple);
     apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
     apple.body.setVelocityY(500);
 
+    // zigzag
+    // this.tweens.add({
+    //   targets: apple,
+    //   x: x + 130,                // Mover tantos pixels para a direita
+    //   yoyo: true,               // Vai e volta (zigue-zague)
+    //   repeat: -1,               // Repetição infinita
+    //   duration: 500,            // Duração do movimento para um lado (500ms)
+    //   ease: 'Sine.easeInOut'    // Suaviza o movimento para parecer natural
+    // });
+
     // const rectangle = this.add.rectangle(x, 10, 50, 10, 0xfabfff).setDepth(99)
     // this.time.delayedCall(500, () => {
     //   rectangle.destroy();
     // })
+  };
+
+  spawnZigZagApples() {
+    this.allDroppedApples += 1;
+    this.allApplesText.setText('Frutas total: ' + this.allDroppedApples);
+    const x = Phaser.Math.Between(130, this.scale.width - 120);
+    const apple = new Apple(this, x, 0, 'apple');
+    this.apples.add(apple);
+    this.add.existing(apple);
+    apple.body.setAngularVelocity(360);
+    apple.body.setVelocityY(500);
+
+    // zigzag
+    this.tweens.add({
+      targets: apple,
+      x: x + 130,               // Mover tantos pixels para a direita
+      yoyo: true,               // Vai e volta (zigue-zague)
+      repeat: -1,               // Repetição infinita
+      duration: 500,            // Duração do movimento para um lado (500ms)
+      ease: 'Sine.easeInOut' 
+    });
   };
 
   collectApple(player, apple) {
@@ -189,9 +255,12 @@ export class Game extends Scene {
   };
 
   spawnSpikyFruits() {
+    // tela treme
+    this.camera.shake(500, 0.015); // duração, intensidade
+
     // esses sao os padroes de "buracos" na sequencia de spikyFruits
     const SpikyFruitsPattern = {
-      0: 1, // buraco 3
+      0: 1, // ex: buraco 2
       1: 3,
       2: 4,
       3: 6,
@@ -204,7 +273,7 @@ export class Game extends Scene {
       10: 5,
     };
 
-    let xPosition = 150;
+    let xPosition = 180;
     let space = 100;
 
     // usando o spikyFruitPatternIndex para pegar o buraco do padrão atual
@@ -219,7 +288,7 @@ export class Game extends Scene {
       }
 
       const x = xPosition;
-      const spikyFruit = new SpikyFruit(this, x, 0);
+      const spikyFruit = new SpikyFruit(this, x, 0, 'spiky');
       // spikyFruit.setScale(0.15);
       this.spikyFruits.add(spikyFruit);
       this.add.existing(spikyFruit);
@@ -284,10 +353,61 @@ export class Game extends Scene {
       player.play('move');
     })
 
-    this.time.delayedCall(8000, () => {
+    this.time.delayedCall(12000, () => {
       player.deactivateBoost();
     })
   };
+
+  hit(player, spikyFruit) {
+    // verifica se a spikyFruit já causou dano
+    if (!spikyFruit.hasDamagedPlayer) {
+      this.player.life -= 1;
+      this.lifeText.setText('Life: ' + this.player.life);
+      this.player.setTint(0xff0000);
+
+      // Marca que a spikyFruit já causou dano ao jogador
+      spikyFruit.hasDamagedPlayer = true;
+
+      this.time.delayedCall(100, () => {
+        this.player.clearTint();
+      });
+    }
+  }
+
+  wind() {
+    this.rain.setTexture('rain-wind');
+
+    this.apples.children.iterate((apple) => {
+      apple.body.setVelocityX(100);
+    });
+
+    this.time.delayedCall(2000, () => {
+      this.rain.setTexture('rain');
+    })
+  }
+
+  showWoodpecker() {
+    // cria pica-pau
+    this.bird = this.add.sprite(0, 300, 'pp-flying');
+    this.bird.play('fly');
+
+    this.tweens.add({
+      targets: this.bird,
+      x: 950,              // posicao final no eixo X
+      duration: 2000,
+      // ease: 'Sine.easeOut',
+      ease: 'linear',
+      onComplete: () => {
+        // this.bird.play('peck');
+        this.bird.setTexture('pp-peck', 'pp-peck-2')
+        this.bird.stop();
+        this.bird.x = 1012;
+      },
+      callbackScope: this
+    });
+  }
+
+  ///////////////////////////// UPDATE ////////////////////////////////
 
   update() {
     this.player.update(
@@ -296,6 +416,7 @@ export class Game extends Scene {
     );
 
     // this.rain.tilePositionY -= this.rainSpeedY;
+
     // this.rain.tilePositionX -= this.rainSpeedX;
 
     // console.log(Math.floor(this.game.loop.actualFps))

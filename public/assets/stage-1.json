@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "stage-1-v2",
+			"image": "stage-1",
 			"format": "RGBA8888",
 			"size": {
 				"w": 1913,

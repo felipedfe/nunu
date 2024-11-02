@@ -37,11 +37,13 @@ export class Preloader extends Scene {
         // this.load.image('floor', 'floor.png');
         // this.load.image('powerUp', 'power-up.png');
         this.load.image('rain', 'rain.png');
+        this.load.image('rain-wind', 'rain-wind.png');
 
         // this.load.atlas('character', 'character.png', 'character.json');
         this.load.atlas('player', 'player.png', 'player.json');
+        this.load.atlas('pp-flying', 'pp-flying.png', 'pp-flying.json');
+        this.load.atlas('pp-peck', 'pp-peck.png', 'pp-peck.json');
         this.load.atlas('stage-1', 'stage-1.png', 'stage-1.json');
-        this.load.atlas('stage-1-v2', 'stage-1-v2.png', 'stage-1-v2.json');
     }
 
     create() {
@@ -64,6 +66,26 @@ export class Preloader extends Scene {
             frames: [{ key: 'player', frame: 'boca-aberta-low' }],
             frameRate: 1
         });
+
+        this.anims.create({
+            key: 'fly',
+            frames: [
+                { key: 'pp-flying', frame: 'pp-flying-1' },
+                { key: 'pp-flying', frame: 'pp-flying-2' }
+            ],
+            frameRate: 5,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'peck',
+            frames: [
+                { key: 'pp-peck', frame: 'pp-peck-1' },
+                { key: 'pp-peck', frame: 'pp-peck-2' }
+            ],
+            frameRate: 10,
+            repeat: 4,
+        })
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('Game');

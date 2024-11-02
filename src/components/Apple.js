@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
 export class Apple extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y) {
-    super(scene, x, y, 'stage-1-v2', 'spiky');
+  constructor(scene, x, y, sprite) {
+    super(scene, x, y, 'stage-1', sprite);
 
     this.collected = false;
 

@@ -1,0 +1,61 @@
+{
+	"textures": [
+		{
+			"image": "pp-flying",
+			"format": "RGBA8888",
+			"size": {
+				"w": 410,
+				"h": 73
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "pp-flying-1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 205,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 7,
+						"w": 205,
+						"h": 73
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 205,
+						"h": 73
+					}
+				},
+				{
+					"filename": "pp-flying-2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 205,
+						"h": 80
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 205,
+						"h": 63
+					},
+					"frame": {
+						"x": 205,
+						"y": 0,
+						"w": 205,
+						"h": 63
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

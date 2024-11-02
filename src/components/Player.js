@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 export class Player extends Phaser.GameObjects.Sprite {
-  life = 10;
+  life = 4;
   velocity = 600;
   initialAcceleration = 4000;
   acceleration = this.initialAcceleration;
