@@ -92,29 +92,29 @@ export class Player extends Phaser.GameObjects.Sprite {
   }
 
   // atualiza o player com base nas entradas do teclado
-  update(cursors) {
-    if (cursors.left.isDown) {
+  update(cursors, A, S) {
+    if (cursors.left.isDown || A.isDown) {
       this.body.setAccelerationX(this.acceleration * -1); // move para a esquerda
       if (this.anims.currentAnim?.key !== 'eat' && (this.anims.currentAnim?.key !== 'move' || !this.anims.isPlaying)) {
         this.play('move');
       }
 
       // verifica se o jogador está mudando de direção enquanto o boost está ativo
-      if (this.isBoosting && this.boostDirection !== 'left') {
+      // if (this.isBoosting && this.boostDirection !== 'left') {
         // this.deactivateBoost(); // desativa o boost ao mudar de direção
         // this.y = this.Y_POSITION;
-      }
-    } else if (cursors.right.isDown) {
+      // }
+    } else if (cursors.right.isDown || S.isDown) {
       this.body.setAccelerationX(this.acceleration); // move para a direita
       if (this.anims.currentAnim?.key !== 'eat' && (this.anims.currentAnim?.key !== 'move' || !this.anims.isPlaying)) {
         this.play('move');
       }
 
       // verifica se o jogador está mudando de direção enquanto o boost está ativo
-      if (this.isBoosting && this.boostDirection !== 'right') {
+      // if (this.isBoosting && this.boostDirection !== 'right') {
         // this.deactivateBoost(); // desativa o boost ao mudar de direção
         // this.y = this.Y_POSITION;
-      }
+      // }
     } else {
       this.body.setAccelerationX(0);
     }

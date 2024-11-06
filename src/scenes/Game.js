@@ -72,6 +72,10 @@ export class Game extends Scene {
 
     // define as teclas de movimento
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
     // this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
@@ -194,16 +198,6 @@ export class Game extends Scene {
     apple.body.setAngularVelocity(360); // a maçã vai girar enquanto cai
     apple.body.setVelocityY(500);
 
-    // zigzag
-    // this.tweens.add({
-    //   targets: apple,
-    //   x: x + 130,                // Mover tantos pixels para a direita
-    //   yoyo: true,               // Vai e volta (zigue-zague)
-    //   repeat: -1,               // Repetição infinita
-    //   duration: 500,            // Duração do movimento para um lado (500ms)
-    //   ease: 'Sine.easeInOut'    // Suaviza o movimento para parecer natural
-    // });
-
     // const rectangle = this.add.rectangle(x, 10, 50, 10, 0xfabfff).setDepth(99)
     // this.time.delayedCall(500, () => {
     //   rectangle.destroy();
@@ -213,7 +207,7 @@ export class Game extends Scene {
   spawnZigZagApples() {
     this.allDroppedApples += 1;
     this.allApplesText.setText('Frutas total: ' + this.allDroppedApples);
-    const x = Phaser.Math.Between(130, this.scale.width - 120);
+    const x = Phaser.Math.Between(200, this.scale.width - 200);
     const apple = new Apple(this, x, 0, 'apple');
     this.apples.add(apple);
     this.add.existing(apple);
@@ -223,10 +217,10 @@ export class Game extends Scene {
     // zigzag
     this.tweens.add({
       targets: apple,
-      x: x + 130,               // Mover tantos pixels para a direita
-      yoyo: true,               // Vai e volta (zigue-zague)
-      repeat: -1,               // Repetição infinita
-      duration: 500,            // Duração do movimento para um lado (500ms)
+      x: x + 130,               // mover tantos pixels para a direita
+      yoyo: true,               // vai e volta
+      repeat: -1,               
+      duration: 500,            // duração do movimento para um lado
       ease: 'Sine.easeInOut'
     });
   };
@@ -437,6 +431,8 @@ export class Game extends Scene {
   update() {
     this.player.update(
       this.cursors,
+      this.A,
+      this.S,
       // this.spaceBar
     );
 
