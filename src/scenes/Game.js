@@ -131,26 +131,26 @@ export class Game extends Scene {
       callback: this.spawnApple,
       // callback: this.spawnZigZagApples,
       callbackScope: this,
-      loop: true
+      loop: true,
     });
 
-    // frutas espinhosas
-    this.time.delayedCall(25000, () => { // tempo em milissegundos
-      this.appleEvent.remove(); // para o evento das maçãs
-      // this.showWoodpecker()
 
-      // cria o evento das frutas espinhosas
-      // this.spikyFruitEvent = this.time.addEvent({
-      //   delay: 1500,
-      //   callback: this.spawnSpikyFruits,
-      //   // callback: this.spawnZigZagApples,
-      //   callbackScope: this,
-      //   loop: true
-      // });
-    }, null, this);
+    // this.time.delayedCall(25000, () => {
+    //   this.appleEvent.remove();
+    //   // this.showWoodpecker()
+
+    //   // cria o evento das frutas espinhosas
+    //   // this.spikyFruitEvent = this.time.addEvent({
+    //   //   delay: 1500,
+    //   //   callback: this.spawnSpikyFruits,
+    //   //   // callback: this.spawnZigZagApples,
+    //   //   callbackScope: this,
+    //   //   loop: true
+    //   // });
+    // }, null, this);
 
     // pica-pau
-    this.time.delayedCall(22000, () => {
+    this.time.delayedCall(4000, () => {
       this.showWoodpecker();
     });
 
@@ -219,7 +219,7 @@ export class Game extends Scene {
       targets: apple,
       x: x + 130,               // mover tantos pixels para a direita
       yoyo: true,               // vai e volta
-      repeat: -1,               
+      repeat: -1,
       duration: 500,            // duração do movimento para um lado
       ease: 'Sine.easeInOut'
     });
@@ -384,6 +384,8 @@ export class Game extends Scene {
   }
 
   showWoodpecker() {
+    this.appleEvent.paused = true;
+
     // cria pica-pau
     this.bird = this.add.sprite(0, 300, 'pp-flying');
     this.bird.play('fly');
@@ -408,7 +410,12 @@ export class Game extends Scene {
             this.spawnZigZagApples();
           },
           callbackScope: this,
-          loop: true
+          // loop: true
+          repeat: 2,
+          onComplete: () => { 
+            this.appleEvent.paused = false;
+            console.log(this.appleEvent)
+          }
         })
       },
       callbackScope: this
