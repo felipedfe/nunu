@@ -1,0 +1,103 @@
+{
+	"textures": [
+		{
+			"image": "player",
+			"format": "RGBA8888",
+			"size": {
+				"w": 345,
+				"h": 100
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "boca-aberta-low",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 106,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 106,
+						"h": 100
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 106,
+						"h": 100
+					}
+				},
+				{
+					"filename": "boca-fechada-1-low",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 110,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 2,
+						"w": 106,
+						"h": 100
+					},
+					"frame": {
+						"x": 106,
+						"y": 0,
+						"w": 106,
+						"h": 100
+					}
+				},
+				{
+					"filename": "boca-fechada-2-low",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 110,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 2,
+						"w": 106,
+						"h": 100
+					},
+					"frame": {
+						"x": 212,
+						"y": 0,
+						"w": 106,
+						"h": 100
+					}
+				},
+				{
+					"filename": "wheel",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 27,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 27,
+						"h": 29
+					},
+					"frame": {
+						"x": 318,
+						"y": 0,
+						"w": 27,
+						"h": 29
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

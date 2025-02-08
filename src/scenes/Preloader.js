@@ -40,10 +40,10 @@ export class Preloader extends Scene {
         this.load.image('rain-wind', 'rain-wind.png');
 
         // this.load.atlas('character', 'character.png', 'character.json');
-        this.load.atlas('player', 'player.png', 'player.json');
+        this.load.atlas('player', 'player-b.png', 'player-b.json');
         this.load.atlas('pp-flying', 'pp-flying.png', 'pp-flying.json');
         this.load.atlas('pp-peck', 'pp-peck.png', 'pp-peck.json');
-        this.load.atlas('stage-1', 'stage-1.png', 'stage-1.json');
+        this.load.atlas('stage-1', 'stage-1-b.png', 'stage-1-b.json');
     }
 
     create() {

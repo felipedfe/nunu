@@ -1,0 +1,145 @@
+{
+	"textures": [
+		{
+			"image": "stage-1",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1980,
+				"h": 614
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "floor",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 850,
+						"h": 37
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 850,
+						"h": 37
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 850,
+						"h": 37
+					}
+				},
+				{
+					"filename": "tree1",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 534,
+						"h": 614
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 534,
+						"h": 614
+					},
+					"frame": {
+						"x": 850,
+						"y": 0,
+						"w": 534,
+						"h": 614
+					}
+				},
+				{
+					"filename": "tree2",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 518,
+						"h": 614
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 518,
+						"h": 614
+					},
+					"frame": {
+						"x": 1384,
+						"y": 0,
+						"w": 518,
+						"h": 614
+					}
+				},
+				{
+					"filename": "spiky",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 33,
+						"h": 36
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 33,
+						"h": 36
+					},
+					"frame": {
+						"x": 1902,
+						"y": 0,
+						"w": 33,
+						"h": 36
+					}
+				},
+				{
+					"filename": "power-up",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 24,
+						"h": 34
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 24,
+						"h": 34
+					},
+					"frame": {
+						"x": 1935,
+						"y": 0,
+						"w": 24,
+						"h": 34
+					}
+				},
+				{
+					"filename": "apple",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 21,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 21,
+						"h": 32
+					},
+					"frame": {
+						"x": 1959,
+						"y": 0,
+						"w": 21,
+						"h": 32
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

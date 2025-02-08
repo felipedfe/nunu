@@ -9,9 +9,9 @@ import { Preloader } from './scenes/Preloader';
 const config = {
   type: Phaser.AUTO,
   // width: 1024,
-  width: 1150,
+  width: 850,
   // height: 768,
-  height: 867,   // nova proporcao (850 x 640 px)
+  height: 640,   // nova proporcao (850 x 640 px)
   parent: 'game-container',
   backgroundColor: '#ffffff',
   scale: {
@@ -25,7 +25,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      // debug: true,
+      debug: true,
       // debugBodyColor: 0xb0f2ff,
       gravity: { y: 0 },
     }

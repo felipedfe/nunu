@@ -17,10 +17,10 @@ export class Game extends Scene {
   }
 
   create() {
-    this.physics.world.setBounds(130, 0, this.game.config.width - 240, this.game.config.height);
+    this.physics.world.setBounds(120, 0, this.game.config.width - 200, this.game.config.height);
 
     // cria player
-    this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 30);
+    this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 15);
     this.player.setScale(0.9);
     this.add.existing(this.player);
     this.player.setDepth(2);
@@ -46,22 +46,22 @@ export class Game extends Scene {
 
     // TEXTO
     this.timeText = this.add.text(100, 300, 'Tempo: 0', {
-      fontSize: '32px',
+      fontSize: '22px',
       fill: '#000'
     }).setDepth(3);
 
     this.collectedApplesText = this.add.text(100, 350, 'Frutas coletadas: 0', {
-      fontSize: '32px',
+      fontSize: '22px',
       fill: '#000'
     }).setDepth(3);
 
     this.allApplesText = this.add.text(100, 250, 'Frutas total: 0', {
-      fontSize: '32px',
+      fontSize: '22px',
       fill: '#000'
     }).setDepth(3);
 
     this.lifeText = this.add.text(100, 200, 'Life: ' + this.player.life, {
-      fontSize: '32px',
+      fontSize: '22px',
       fill: '#ff0000'
     }).setDepth(3);
 
@@ -88,23 +88,23 @@ export class Game extends Scene {
     //   .setDepth(2)
     //   // .setAlpha(0.5)
 
-    this.floor = this.add.image(0, 80, 'stage-1', 'floor')
+    this.floor = this.add.image(0, this.game.config.height - 30, 'stage-1', 'floor')
       .setOrigin(0, 0)
       .setDepth(1);
 
     const treeScale = 1;
 
-    this.tree1 = this.add.image(-40, -40, 'stage-1', 'tree1')
+    this.tree1 = this.add.image(0, 0, 'stage-1', 'tree1')
       // .setScale(treeScale)
       .setOrigin(0, 0)
       .setDepth(1);
 
-    this.tree2 = this.add.image(this.game.config.width, -40, 'stage-1', 'tree2')
+    this.tree2 = this.add.image(this.game.config.width, 0, 'stage-1', 'tree2')
       // .setScale(treeScale) 
       .setOrigin(0, 0)
       .setDepth(1);
 
-    this.tree2.x = this.game.config.width - ((this.tree2.width * treeScale) - 40);
+    this.tree2.x = this.game.config.width - ((this.tree2.width * treeScale));
 
     // cria o grupo de maçãs
     this.apples = this.physics.add.group({
@@ -389,6 +389,7 @@ export class Game extends Scene {
     // cria pica-pau
     this.bird = this.add.sprite(0, 300, 'pp-flying');
     this.bird.play('fly');
+    this.bird.setScale(0.80); 
 
     this.tweens.add({
       targets: this.bird,
