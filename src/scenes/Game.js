@@ -25,25 +25,6 @@ export class Game extends Scene {
     this.add.existing(this.player);
     this.player.setDepth(2);
 
-    // // cria pica-pau
-    // this.bird = this.add.sprite(0, 300, 'pp-flying');
-    // this.bird.play('fly');
-
-    // this.tweens.add({
-    //   targets: this.bird,
-    //   x: 950,              // posicao final no eixo X
-    //   duration: 2000,
-    //   // ease: 'Sine.easeOut',
-    //   ease: 'linear',
-    //   onComplete: () => {
-    //     // this.bird.play('peck');
-    //     this.bird.setTexture('pp-peck', 'pp-peck-2')
-    //     this.bird.stop();
-    //     this.bird.x = 1012;
-    //   },
-    //   callbackScope: this
-    // });
-
     // TEXTO
     this.timeText = this.add.text(100, 300, 'Tempo: 0', {
       fontSize: '22px',
@@ -125,7 +106,6 @@ export class Game extends Scene {
     // EVENTOS DE TEMPO
     // macã
     this.appleEvent = this.time.addEvent({
-      // delay: 1500, // intervalo entre as maçãs
       delay: 1500, // intervalo entre as maçãs
       // callback: this.spawnSpikyFruits,
       callback: this.spawnApple,
@@ -315,7 +295,7 @@ export class Game extends Scene {
     // this.powerUp.body.setVelocityY(500);
     this.powerUp.body.setVelocityY(250);
 
-    this.time.addEvent({
+    this.powerUp.blinkTimer = this.time.addEvent({
       delay: 200,
       callback: this.powerUp.blink,
       callbackScope: this.powerUp,
@@ -329,6 +309,9 @@ export class Game extends Scene {
 
   collectPowerUp(player, powerUp) {
     if (powerUp.collected) {
+      if (powerUp.blinkTimer) {
+        powerUp.blinkTimer.remove(false);
+      }
       return
     }
 
@@ -362,7 +345,7 @@ export class Game extends Scene {
       this.lifeText.setText('Life: ' + this.player.life);
       this.player.setTint(0xff0000);
 
-      // Marca que a spikyFruit já causou dano ao jogador
+      // marca que a spikyFruit já causou dano ao jogador
       spikyFruit.hasDamagedPlayer = true;
 
       this.time.delayedCall(100, () => {
@@ -388,12 +371,14 @@ export class Game extends Scene {
 
     // cria pica-pau
     this.bird = this.add.sprite(0, 300, 'pp-flying');
+    this.bird.setScale(0.80);
     this.bird.play('fly');
-    this.bird.setScale(0.80); 
+
+    let repeatCount = 0;
 
     this.tweens.add({
       targets: this.bird,
-      x: 950,              // posicao final no eixo X
+      x: 750,              // posicao final no eixo X
       duration: 2000,
       // ease: 'Sine.easeOut',
       ease: 'linear',
@@ -401,22 +386,23 @@ export class Game extends Scene {
         // this.bird.play('peck');
         this.bird.setTexture('pp-peck', 'pp-peck-2')
         this.bird.stop();
-        this.bird.x = 1012;
+        this.bird.x = 745;
 
         this.time.addEvent({
           delay: 1400,
           callback: () => {
+            repeatCount += 1;
             this.camera.shake(500, 0.010); // duração, intensidade
             this.bird.play('peck');
             this.spawnZigZagApples();
+            console.log(this)
+
+            if (repeatCount > 2) {
+              this.appleEvent.paused = false;
+            }
           },
           callbackScope: this,
-          // loop: true
           repeat: 2,
-          onComplete: () => { 
-            this.appleEvent.paused = false;
-            console.log(this.appleEvent)
-          }
         })
       },
       callbackScope: this
@@ -440,7 +426,7 @@ export class Game extends Scene {
     this.player.update(
       this.cursors,
       this.A,
-      this.S,
+      this.D,
       // this.spaceBar
     );
 
@@ -451,5 +437,13 @@ export class Game extends Scene {
     // console.log(Math.floor(this.game.loop.actualFps))
 
     // console.log(this.apples.getTotalUsed());
+
+    if (this.powerUp && this.powerUp.y > this.game.config.height) {
+      if (this.powerUp.blinkTimer) {
+        this.powerUp.blinkTimer.remove(false);
+      }
+      this.powerUp.destroy();
+      this.powerUp = null;
+    }
   };
 }

@@ -20,10 +20,7 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     // caixa de colisão
     this.body.setSize(65, 25);
-    this.body.setOffset(35, 10);
-
-    // this.body.setSize(200, 80);
-    // this.body.setOffset(100, 30);
+    this.body.setOffset(22, 10);
 
     this.play('move');
 
@@ -92,8 +89,8 @@ export class Player extends Phaser.GameObjects.Sprite {
   }
 
   // atualiza o player com base nas entradas do teclado
-  update(cursors, A, S) {
-    if (cursors.left.isDown || A.isDown) {
+  update(cursors, key1, key2) {
+    if (cursors.left.isDown || key1.isDown) {
       this.body.setAccelerationX(this.acceleration * -1); // move para a esquerda
       if (this.anims.currentAnim?.key !== 'eat' && (this.anims.currentAnim?.key !== 'move' || !this.anims.isPlaying)) {
         this.play('move');
@@ -104,7 +101,7 @@ export class Player extends Phaser.GameObjects.Sprite {
         // this.deactivateBoost(); // desativa o boost ao mudar de direção
         // this.y = this.Y_POSITION;
       // }
-    } else if (cursors.right.isDown || S.isDown) {
+    } else if (cursors.right.isDown || key2.isDown) {
       this.body.setAccelerationX(this.acceleration); // move para a direita
       if (this.anims.currentAnim?.key !== 'eat' && (this.anims.currentAnim?.key !== 'move' || !this.anims.isPlaying)) {
         this.play('move');
