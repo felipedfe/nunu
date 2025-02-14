@@ -3,6 +3,8 @@ import { Player } from '../components/Player';
 import { Apple } from '../components/Apple';
 import { SpikyFruit } from '../components/SpikyFruit';
 import { PowerUp } from '../components/PowerUp';
+import { Hud } from '../components/Hud';
+import { Stage1Builder } from '../builders/Stage1Builder';
 
 export class Game extends Scene {
   constructor() {
@@ -26,10 +28,17 @@ export class Game extends Scene {
     this.add.existing(this.player);
     this.player.setDepth(2);
 
-    // CAMERA
-    this.camera = this.cameras.main;
+    // cria o hud
+    this.hud = new Hud(this);
 
-    // this.camera.setBackgroundColor(0x4a18e2);
+    // cria cenário
+    this.stage = new Stage1Builder(this);
+    this.stage.createRain();
+    this.stage.createFloor();
+    this.stage.createTrees();
+
+    // camera
+    this.camera = this.cameras.main;
     // this.camera.setBackgroundColor(0x000);
 
     // define as teclas de movimento
@@ -38,38 +47,6 @@ export class Game extends Scene {
     this.A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
-    // this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-    // CENÁRIO
-    this.rainSpeedY = 6;
-    this.rainSpeedX = 0.5;
-
-    this.rain = this.add.tileSprite(0, -30, this.game.config.width, this.game.config.height, 'rain')
-      .setOrigin(0, 0)
-      .setDepth(2)
-      .setAlpha(0)
-
-
-    this.rainStarted = false;
-
-    this.floor = this.add.image(0, this.game.config.height - 30, 'stage-1', 'floor')
-      .setOrigin(0, 0)
-      .setDepth(1);
-
-    const treeScale = 1;
-
-    this.tree1 = this.add.image(0, 0, 'stage-1', 'tree1')
-      // .setScale(treeScale)
-      .setOrigin(0, 0)
-      .setDepth(1);
-
-    this.tree2 = this.add.image(this.game.config.width, 0, 'stage-1', 'tree2')
-      // .setScale(treeScale) 
-      .setOrigin(0, 0)
-      .setDepth(1);
-
-    this.tree2.x = this.game.config.width - ((this.tree2.width * treeScale));
 
     // cria o grupo de maçãs
     this.apples = this.physics.add.group({
@@ -108,7 +85,6 @@ export class Game extends Scene {
       this.stopRain();
     }, [], this);
 
-
     // vento
     // this.time.addEvent({
     //   delay: 3500,
@@ -116,13 +92,6 @@ export class Game extends Scene {
     //   callbackScope: this,
     //   loop: true,
     // });
-
-    // chuva
-    // this.time.delayedCall(30000, () => {
-    //   this.rainStarted = true;
-    //   this.rain.alpha = 0.5;
-
-    // }, [], this);
 
     // timer
     this.time.addEvent({
@@ -140,40 +109,8 @@ export class Game extends Scene {
       loop: true,
     })
 
-    this.createHUD();
-
     /////////////////////////// FIM DO CREATE //////////////////////////////
   };
-
-  createHUD() {
-    this.hudContainer = this.add.container(0, 0).setDepth(3);
-    const containerHeight = 55;
-
-    const hudBackground = this.add.graphics();
-    hudBackground.fillStyle(0xffffff, 1);
-    hudBackground.fillRect(0, 0, this.game.config.width, containerHeight);
-    // hudBackground.lineStyle(3, 0x000000);
-    hudBackground.strokeRect(0, 0, this.game.config.width, containerHeight);
-
-    const hudLine = this.add.graphics();
-    hudLine.lineStyle(2.5, 0x000000, 1);
-    hudLine.lineBetween(0, containerHeight, this.game.config.width, containerHeight);
-
-
-    this.timeText = this.add.text(this.game.config.width / 2, 15, this.gameTime, { fontSize: "26px", fill: "#000", fontFamily: "monospace" });
-    // this.lifeText = this.add.text(20, 20, `Life: ${this.player.life}`, { fontSize: "18px", fill: "#ff0000", fontFamily: "monospace" });
-    // this.totalFruitsText = this.add.text(200, 25, `Frutas total: ${this.allDroppedApples}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
-    this.collectedFruitsText = this.add.text(600, 25, `Score: ${this.collectedApples}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
-
-    this.hudContainer.add([
-      hudBackground,
-      // this.lifeText,
-      // this.totalFruitsText,
-      this.timeText,
-      this.collectedFruitsText,
-      hudLine
-    ]);
-  }
 
   updateTime() {
     this.gameTime -= 1;
@@ -189,7 +126,6 @@ export class Game extends Scene {
   endGame() {
     this.scene.start('GameOver', { score: this.collectedApples });
   }
-
 
   spawnApple() {
     this.allDroppedApples += 1;
@@ -243,7 +179,6 @@ export class Game extends Scene {
     apple.setActive(false);
 
     this.time.delayedCall(100, () => {
-      // apple.disableBody(true, false);
       apple.destroy(); // destroi a maçã quando o jogador pega ela
       this.collectedApples += 1;
       this.collectedFruitsText.setText('Score: ' + this.collectedApples);
@@ -341,15 +276,12 @@ export class Game extends Scene {
     }
 
     player.setTint(0xfff45e);
-
     powerUp.collected = true;
-
     powerUp.setActive(false);
 
     this.time.delayedCall(100, () => {
       powerUp.destroy();
       powerUp = null;
-      // player.clearTint();
     });
     player.play('eat');
     player.activateBoost();
@@ -392,8 +324,6 @@ export class Game extends Scene {
   }
 
   showWoodpecker() {
-    // this.appleEvent.paused = true;
-
     // cria pica-pau
     this.bird = this.add.sprite(0, 300, 'pp-flying');
     this.bird.setScale(0.80);
@@ -405,10 +335,8 @@ export class Game extends Scene {
       targets: this.bird,
       x: 750,              // posicao final no eixo X
       duration: 2000,
-      // ease: 'Sine.easeOut',
       ease: 'linear',
       onComplete: () => {
-        // this.bird.play('peck');
         this.appleEvent.paused = true;
         this.bird.setTexture('pp-peck', 'pp-peck-2')
         this.bird.stop();
@@ -438,17 +366,6 @@ export class Game extends Scene {
       },
       callbackScope: this
     });
-
-    // this.time.addEvent({
-    //   delay: 3000,
-    //   callback: () => {
-    //     this.camera.shake(500, 0.015); // duração, intensidade
-    //     this.bird.play('peck');
-    //     this.spawnZigZagApples();
-    //   },
-    //   callbackScope: this,
-    //   loop: true
-    // })
   }
 
   startRain() {
@@ -457,9 +374,6 @@ export class Game extends Scene {
   }
 
   stopRain() {
-    // this.rainStarted = false;
-    // this.rain.destroy();
-
     this.tweens.add({
       targets: this.rain,
       alpha: 0,
@@ -471,13 +385,10 @@ export class Game extends Scene {
     });
   }
 
-
   showThunder() {
     this.flash = this.physics.add.sprite(0, 0, "flash-sprites").setDepth(3);
     this.flash.displayWidth = this.game.config.width;
     this.flash.setOrigin(0, 0);
-    // this.flash.alpha = 0;
-
     this.flash.alpha = 0.5;
     this.flash.play("flash");
     // callback lançada depois que animação termina
@@ -486,14 +397,11 @@ export class Game extends Scene {
     });
   }
 
-  ///////////////////////////// UPDATE ////////////////////////////////
-
   update() {
     this.player.update(
       this.cursors,
       this.A,
       this.D,
-      // this.spaceBar
     );
 
     if (this.rainStarted) {
@@ -502,7 +410,6 @@ export class Game extends Scene {
     }
 
     // console.log(Math.floor(this.game.loop.actualFps))
-
     // console.log(this.apples.getTotalUsed());
 
     if (this.powerUp && this.powerUp.y > this.game.config.height) {
