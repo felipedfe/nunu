@@ -26,29 +26,35 @@ export class Game extends Scene {
     this.add.existing(this.player);
     this.player.setDepth(2);
 
-    // TEXTO
-    this.timeText = this.add.text(100, 300, 'Tempo: 0', {
-      fontSize: '22px',
-      fill: '#000'
-    }).setDepth(3);
-
-    this.collectedApplesText = this.add.text(100, 350, 'Frutas coletadas: 0', {
-      fontSize: '22px',
-      fill: '#000'
-    }).setDepth(3);
-
-    this.allApplesText = this.add.text(100, 250, 'Frutas total: 0', {
-      fontSize: '22px',
-      fill: '#000'
-    }).setDepth(3);
-
-    this.lifeText = this.add.text(100, 200, 'Life: ' + this.player.life, {
-      fontSize: '22px',
-      fill: '#ff0000'
-    }).setDepth(3);
-
     // CAMERA
     this.camera = this.cameras.main;
+    // this.camera.flash(100, 255, 255, 0, true);
+    // this.camera.shake(300, 0.01);
+
+
+    // this.time.delayedCall(300, () => {
+    //   this.camera.flash(80, 255, 255, 0, true);
+    //   this.camera.shake(200, 0.008);
+    // });
+
+    // this.time.delayedCall(400, () => {
+    //   this.camera.flash(50, 255, 255, 0, true);
+    //   this.camera.shake(150, 0.005);
+    // });
+
+    // this.flash = this.physics.add.sprite(0, 0, "flash-sprites").setDepth(3);
+    // this.flash.displayWidth = this.game.config.width;
+    // this.flash.setOrigin(0, 0);
+    // this.flash.alpha = 0;
+
+    // this.flash.alpha = 0.9;
+    // this.flash.play("flash");
+    // // callback lançada depois que animação termina
+    // this.flash.once("animationcomplete", () => {
+    //   this.flash.alpha = 0;
+    // });
+
+
     // this.camera.setBackgroundColor(0x4a18ed);
     // this.camera.setBackgroundColor(0x000);
 
@@ -70,7 +76,7 @@ export class Game extends Scene {
       .setDepth(2)
       .setAlpha(0)
 
-      console.log(this.rain)
+    console.log(this.rain)
 
     this.rainStarted = false;
 
@@ -135,9 +141,15 @@ export class Game extends Scene {
     // }, null, this);
 
     // pica-pau
-    this.time.delayedCall(10000, () => {
+    this.time.delayedCall(20000, () => {
       this.showWoodpecker();
     });
+
+    // para a chuva
+    this.time.delayedCall(40000, () => {
+      this.stopRain();
+    }, [], this);
+
 
     // vento
     // this.time.addEvent({
@@ -148,12 +160,12 @@ export class Game extends Scene {
     // });
 
     // chuva
-    this.time.delayedCall(30000, () => {
-      this.rainStarted = true;
-      this.rain.alpha = 0.5;
-      
-      console.log('Chuva iniciada!');
-    }, [], this);
+    // this.time.delayedCall(30000, () => {
+    //   this.rainStarted = true;
+    //   this.rain.alpha = 0.5;
+
+    //   console.log('Chuva iniciada!');
+    // }, [], this);
 
     // timer
     this.time.addEvent({
@@ -171,8 +183,40 @@ export class Game extends Scene {
       loop: true,
     })
 
+    this.createHUD();
+
     /////////////////////////// FIM DO CREATE //////////////////////////////
   };
+
+  createHUD() {
+    this.hudContainer = this.add.container(0, 0).setDepth(3);
+    const containerHeight = 55;
+
+    const hudBackground = this.add.graphics();
+    hudBackground.fillStyle(0xffffff, 1);
+    hudBackground.fillRect(0, 0, this.game.config.width, containerHeight);
+    // hudBackground.lineStyle(3, 0x000000);
+    hudBackground.strokeRect(0, 0, this.game.config.width, containerHeight);
+
+    const hudLine = this.add.graphics();
+    hudLine.lineStyle(2.5, 0x000000, 1);
+    hudLine.lineBetween(0, containerHeight, this.game.config.width, containerHeight);
+
+
+    this.timeText = this.add.text(400, 0, `Tempo: ${this.elapsedTime}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
+    // this.lifeText = this.add.text(20, 20, `Life: ${this.player.life}`, { fontSize: "18px", fill: "#ff0000", fontFamily: "monospace" });
+    // this.totalFruitsText = this.add.text(200, 25, `Frutas total: ${this.allDroppedApples}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
+    this.collectedFruitsText = this.add.text(600, 25, `Score: ${this.collectedApples}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
+
+    this.hudContainer.add([
+      hudBackground,
+      // this.lifeText,
+      // this.totalFruitsText,
+      this.timeText,
+      this.collectedFruitsText,
+      hudLine
+    ]);
+  }
 
   updateTime() {
     this.elapsedTime += 1;
@@ -182,7 +226,7 @@ export class Game extends Scene {
 
   spawnApple() {
     this.allDroppedApples += 1;
-    this.allApplesText.setText('Frutas total: ' + this.allDroppedApples);
+    // this.totalFruitsText.setText('Frutas total: ' + this.allDroppedApples);
     const x = Phaser.Math.Between(130, this.scale.width - 120);
     const apple = new Apple(this, x, 0, 'apple');
     // apple.setScale(0.15);
@@ -199,7 +243,7 @@ export class Game extends Scene {
 
   spawnZigZagApples() {
     this.allDroppedApples += 1;
-    this.allApplesText.setText('Frutas total: ' + this.allDroppedApples);
+    // this.totalFruitsText.setText('Frutas total: ' + this.allDroppedApples);
     const x = Phaser.Math.Between(110, this.scale.width - 300);
     // const x = Phaser.Math.Between(this.scale.width - 300, this.scale.width - 300);
     const apple = new Apple(this, x, 0, 'apple');
@@ -235,7 +279,7 @@ export class Game extends Scene {
       // apple.disableBody(true, false);
       apple.destroy(); // destroi a maçã quando o jogador pega ela
       this.collectedApples += 1;
-      this.collectedApplesText.setText('Frutas coletadas: ' + this.collectedApples);
+      this.collectedFruitsText.setText('Score: ' + this.collectedApples);
       this.player.clearTint();
     });
     player.play('eat');
@@ -356,7 +400,7 @@ export class Game extends Scene {
     // verifica se a spikyFruit já causou dano
     if (!spikyFruit.hasDamagedPlayer) {
       this.player.life -= 1;
-      this.lifeText.setText('Life: ' + this.player.life);
+      // this.lifeText.setText('Life: ' + this.player.life);
       this.player.setTint(0xff0000);
 
       // marca que a spikyFruit já causou dano ao jogador
@@ -412,13 +456,15 @@ export class Game extends Scene {
             this.spawnZigZagApples();
             console.log(this)
 
-            if (repeatCount > 10) {
+            if (repeatCount > 6) {
               this.appleEvent.paused = false;
               this.appleVelocity = 650;
+              this.thunder();
+              this.startRain();
             }
           },
           callbackScope: this,
-          repeat: 10,
+          repeat: 6,
         })
       },
       callbackScope: this
@@ -434,6 +480,41 @@ export class Game extends Scene {
     //   callbackScope: this,
     //   loop: true
     // })
+  }
+
+  startRain() {
+    this.rainStarted = true;
+    this.rain.alpha = 0.5;
+  }
+
+  stopRain() {
+    // this.rainStarted = false;
+    // this.rain.destroy();
+
+    this.tweens.add({
+      targets: this.rain,
+      alpha: 0,
+      duration: 300,
+      onComplete: () => {
+        this.rainStarted = false;
+        this.rain.destroy();
+      }
+    });
+  }
+
+
+  thunder() {
+    this.flash = this.physics.add.sprite(0, 0, "flash-sprites").setDepth(3);
+    this.flash.displayWidth = this.game.config.width;
+    this.flash.setOrigin(0, 0);
+    // this.flash.alpha = 0;
+
+    this.flash.alpha = 0.5;
+    this.flash.play("flash");
+    // callback lançada depois que animação termina
+    this.flash.once("animationcomplete", () => {
+      this.flash.alpha = 0;
+    });
   }
 
   ///////////////////////////// UPDATE ////////////////////////////////

@@ -44,6 +44,9 @@ export class Preloader extends Scene {
         this.load.atlas('pp-flying', 'pp-flying.png', 'pp-flying.json');
         this.load.atlas('pp-peck', 'pp-peck.png', 'pp-peck.json');
         this.load.atlas('stage-1', 'stage-1-b.png', 'stage-1-b.json');
+
+        this.load.spritesheet('flash-sprites', 'flash-sprites.jpg', { frameWidth: 480, frameHeight: 640 });
+        this.load.spritesheet('flash-sprites-2', 'flash-sprites-2.png', { frameWidth: 480, frameHeight: 640 });
     }
 
     create() {
@@ -86,6 +89,13 @@ export class Preloader extends Scene {
             frameRate: 10,
             repeat: 2,
         })
+
+        this.anims.create({
+            key: 'flash',
+            frames: this.anims.generateFrameNumbers('flash-sprites', { start: 0, end: 2 }),
+            frameRate: 30,
+            repeat: 10,
+          });
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('Game');
