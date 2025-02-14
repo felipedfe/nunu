@@ -7,7 +7,7 @@ import { PowerUp } from '../components/PowerUp';
 export class Game extends Scene {
   constructor() {
     super('Game');
-    this.elapsedTime = 0;
+    this.gameTime = 50;
     this.allDroppedApples = 0;
     this.collectedApples = 0;
     this.powerUp;
@@ -28,34 +28,8 @@ export class Game extends Scene {
 
     // CAMERA
     this.camera = this.cameras.main;
-    // this.camera.flash(100, 255, 255, 0, true);
-    // this.camera.shake(300, 0.01);
 
-
-    // this.time.delayedCall(300, () => {
-    //   this.camera.flash(80, 255, 255, 0, true);
-    //   this.camera.shake(200, 0.008);
-    // });
-
-    // this.time.delayedCall(400, () => {
-    //   this.camera.flash(50, 255, 255, 0, true);
-    //   this.camera.shake(150, 0.005);
-    // });
-
-    // this.flash = this.physics.add.sprite(0, 0, "flash-sprites").setDepth(3);
-    // this.flash.displayWidth = this.game.config.width;
-    // this.flash.setOrigin(0, 0);
-    // this.flash.alpha = 0;
-
-    // this.flash.alpha = 0.9;
-    // this.flash.play("flash");
-    // // callback lançada depois que animação termina
-    // this.flash.once("animationcomplete", () => {
-    //   this.flash.alpha = 0;
-    // });
-
-
-    // this.camera.setBackgroundColor(0x4a18ed);
+    // this.camera.setBackgroundColor(0x4a18e2);
     // this.camera.setBackgroundColor(0x000);
 
     // define as teclas de movimento
@@ -68,7 +42,7 @@ export class Game extends Scene {
     // this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // CENÁRIO
-    this.rainSpeedY = 4;
+    this.rainSpeedY = 6;
     this.rainSpeedX = 0.5;
 
     this.rain = this.add.tileSprite(0, -30, this.game.config.width, this.game.config.height, 'rain')
@@ -76,7 +50,6 @@ export class Game extends Scene {
       .setDepth(2)
       .setAlpha(0)
 
-    console.log(this.rain)
 
     this.rainStarted = false;
 
@@ -125,28 +98,13 @@ export class Game extends Scene {
       loop: true,
     });
 
-
-    // this.time.delayedCall(25000, () => {
-    //   this.appleEvent.remove();
-    //   // this.showWoodpecker()
-
-    //   // cria o evento das frutas espinhosas
-    //   // this.spikyFruitEvent = this.time.addEvent({
-    //   //   delay: 1500,
-    //   //   callback: this.spawnSpikyFruits,
-    //   //   // callback: this.spawnZigZagApples,
-    //   //   callbackScope: this,
-    //   //   loop: true
-    //   // });
-    // }, null, this);
-
     // pica-pau
     this.time.delayedCall(20000, () => {
       this.showWoodpecker();
     });
 
     // para a chuva
-    this.time.delayedCall(40000, () => {
+    this.time.delayedCall(45000, () => {
       this.stopRain();
     }, [], this);
 
@@ -164,7 +122,6 @@ export class Game extends Scene {
     //   this.rainStarted = true;
     //   this.rain.alpha = 0.5;
 
-    //   console.log('Chuva iniciada!');
     // }, [], this);
 
     // timer
@@ -177,7 +134,7 @@ export class Game extends Scene {
 
     // powerup
     this.time.addEvent({
-      delay: 30000,
+      delay: 33000,
       callback: this.spawnPowerUp,
       callbackScope: this,
       loop: true,
@@ -203,7 +160,7 @@ export class Game extends Scene {
     hudLine.lineBetween(0, containerHeight, this.game.config.width, containerHeight);
 
 
-    this.timeText = this.add.text(400, 0, `Tempo: ${this.elapsedTime}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
+    this.timeText = this.add.text(this.game.config.width / 2, 15, this.gameTime, { fontSize: "26px", fill: "#000", fontFamily: "monospace" });
     // this.lifeText = this.add.text(20, 20, `Life: ${this.player.life}`, { fontSize: "18px", fill: "#ff0000", fontFamily: "monospace" });
     // this.totalFruitsText = this.add.text(200, 25, `Frutas total: ${this.allDroppedApples}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
     this.collectedFruitsText = this.add.text(600, 25, `Score: ${this.collectedApples}`, { fontSize: "18px", fill: "#000", fontFamily: "monospace" });
@@ -219,10 +176,20 @@ export class Game extends Scene {
   }
 
   updateTime() {
-    this.elapsedTime += 1;
+    this.gameTime -= 1;
+    this.timeText.setText(this.gameTime);
 
-    this.timeText.setText('Tempo: ' + this.elapsedTime);
+    if (this.gameTime <= 0) {
+      // this.scene.stop('Game');
+      this.scene.pause('Game');
+      // this.endGame();
+    }
   }
+
+  endGame() {
+    this.scene.start('GameOver', { score: this.collectedApples });
+  }
+
 
   spawnApple() {
     this.allDroppedApples += 1;
@@ -454,12 +421,14 @@ export class Game extends Scene {
             this.camera.shake(500, 0.010); // duração, intensidade
             this.bird.play('peck');
             this.spawnZigZagApples();
-            console.log(this)
 
             if (repeatCount > 6) {
-              this.appleEvent.paused = false;
+              this.time.delayedCall(1000, () => {
+                this.appleEvent.paused = false;
+              });
+              // this.appleEvent.paused = false;
               this.appleVelocity = 650;
-              this.thunder();
+              this.showThunder();
               this.startRain();
             }
           },
@@ -484,7 +453,7 @@ export class Game extends Scene {
 
   startRain() {
     this.rainStarted = true;
-    this.rain.alpha = 0.5;
+    this.rain.alpha = 0.8;
   }
 
   stopRain() {
@@ -503,7 +472,7 @@ export class Game extends Scene {
   }
 
 
-  thunder() {
+  showThunder() {
     this.flash = this.physics.add.sprite(0, 0, "flash-sprites").setDepth(3);
     this.flash.displayWidth = this.game.config.width;
     this.flash.setOrigin(0, 0);

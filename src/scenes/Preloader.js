@@ -36,7 +36,7 @@ export class Preloader extends Scene {
         // this.load.image('tree2', 'tree2-v5.png');
         // this.load.image('floor', 'floor.png');
         // this.load.image('powerUp', 'power-up.png');
-        this.load.image('rain', 'rain.png');
+        this.load.image('rain', 'rain-4.png');
         this.load.image('rain-wind', 'rain-wind.png');
 
         // this.load.atlas('character', 'character.png', 'character.json');
@@ -45,7 +45,7 @@ export class Preloader extends Scene {
         this.load.atlas('pp-peck', 'pp-peck.png', 'pp-peck.json');
         this.load.atlas('stage-1', 'stage-1-b.png', 'stage-1-b.json');
 
-        this.load.spritesheet('flash-sprites', 'flash-sprites.jpg', { frameWidth: 480, frameHeight: 640 });
+        this.load.spritesheet('flash-sprites', 'flash-sprites-2.jpg', { frameWidth: 850, frameHeight: 640 });
         this.load.spritesheet('flash-sprites-2', 'flash-sprites-2.png', { frameWidth: 480, frameHeight: 640 });
     }
 
